@@ -52,7 +52,7 @@ export function ReviewsSection() {
           <ul
             ref={trackRef}
             className={cn(
-              "no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2",
+              "no-scrollbar -mx-5 flex touch-pan-x snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2",
               "sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 lg:grid-cols-3",
             )}
           >

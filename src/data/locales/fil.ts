@@ -27,6 +27,8 @@ export const fil: Dictionary = {
     headlineLead: "Araw-araw na suporta para sa",
     headlineAccent: "komportableng galaw",
     trust: "Punan ang form sa ibaba at tatawagan ka namin para kumpirmahin ang iyong order.",
+    playAriaLabel: "I-play ang video",
+    replayAriaLabel: "Ulitin ang video",
   },
 
   trustStrip: {

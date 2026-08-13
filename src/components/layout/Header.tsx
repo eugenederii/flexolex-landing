@@ -14,13 +14,41 @@ export function Header() {
   const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
+  // Hides on scroll down, reveals on scroll up — never hides near the very
+  // top, and a small delta threshold keeps mobile rubber-band jitter from
+  // flickering it. Re-runs on menuOpen so opening the menu resets the
+  // reference point instead of hiding the header out from under it later.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    let lastY = window.scrollY;
+
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      setScrolled(currentY > 12);
+
+      if (menuOpen) {
+        lastY = currentY;
+        return;
+      }
+
+      const delta = currentY - lastY;
+      if (currentY < 80) {
+        setHidden(false);
+      } else if (delta > 8) {
+        setHidden(true);
+      } else if (delta < -8) {
+        setHidden(false);
+      }
+      lastY = currentY;
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [menuOpen]);
+
+  const headerHidden = hidden && !menuOpen;
 
   // Escape closes the mobile menu; the page must not scroll behind it.
   useEffect(() => {
@@ -41,7 +69,8 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300",
+        "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color,transform] duration-300 ease-out",
+        headerHidden ? "-translate-y-full" : "translate-y-0",
         scrolled || menuOpen
           ? "border-b border-line bg-cream/90 backdrop-blur-lg"
           : "border-b border-transparent bg-cream/40 backdrop-blur-sm",

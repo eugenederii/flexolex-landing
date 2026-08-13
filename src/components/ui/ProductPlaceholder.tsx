@@ -46,7 +46,12 @@ export function ProductPlaceholder({
         height={pack.height}
         sizes={sizes}
         priority={priority}
-        className={cn("h-auto w-full object-contain", float && "float-soft", className)}
+        // No default width here on purpose: it would sit on the same element
+        // as the caller's own width class (e.g. the hero's fixed w-18 thumb)
+        // and, since `cn` is a plain string join with no override logic,
+        // Tailwind's generated CSS order — not className order — would pick
+        // the winner. Every call site below sets its own width explicitly.
+        className={cn("h-auto object-contain", float && "float-soft", className)}
       />
     );
   }

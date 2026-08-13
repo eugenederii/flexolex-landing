@@ -25,11 +25,11 @@ export interface AssetSlot {
 export const assets = {
   /* ---------- Product package (appears 5×: hero, product, offer, order, final) */
   productPack: {
-    src: null, // "/assets/product/flexolex-pack.png"
+    src: "/assets/product/flexolex-pack.png",
     alt: "Flexolex daily joint support container",
     brief: "Official Flexolex package, front view, transparent background.",
-    width: 720,
-    height: 900,
+    width: 1080,
+    height: 1080,
   },
 
   /* ---------- Lifestyle editorial ---------------------------------------- */

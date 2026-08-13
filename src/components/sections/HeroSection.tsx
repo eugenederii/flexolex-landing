@@ -87,7 +87,7 @@ export function HeroSection() {
                   float
                   priority
                   sizes="200px"
-                  className="drop-shadow-[0_24px_32px_rgba(11,46,99,0.35)]"
+                  className="w-full drop-shadow-[0_24px_32px_rgba(11,46,99,0.35)]"
                 />
               </div>
             </div>
@@ -105,7 +105,7 @@ export function HeroSection() {
                 id="hero-mobile"
                 priority
                 sizes="18vw"
-                className="aspect-[320/430] w-18 shrink-0 drop-shadow-[0_14px_18px_rgba(11,46,99,0.25)]"
+                className="aspect-square w-18 shrink-0 drop-shadow-[0_14px_18px_rgba(11,46,99,0.25)]"
               />
               <PriceDisplay size="md" />
             </div>

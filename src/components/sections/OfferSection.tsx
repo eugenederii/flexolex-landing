@@ -34,7 +34,7 @@ export function OfferSection() {
                 <ProductPlaceholder
                   id="offer"
                   sizes="(max-width: 1024px) 55vw, 270px"
-                  className="relative drop-shadow-[0_30px_45px_rgba(0,0,0,0.45)]"
+                  className="relative w-full drop-shadow-[0_30px_45px_rgba(0,0,0,0.45)]"
                 />
                 <span className="absolute -top-2 -right-1 rotate-6 rounded-full bg-gold-soft px-3.5 py-2 font-display text-sm font-bold text-navy-deep shadow-lg sm:-top-3 sm:-right-4">
                   {pricing.discountLabel}

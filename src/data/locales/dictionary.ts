@@ -32,6 +32,8 @@ export interface Dictionary {
     headlineLead: string;
     headlineAccent: string;
     trust: string;
+    playAriaLabel: string;
+    replayAriaLabel: string;
   };
 
   trustStrip: {

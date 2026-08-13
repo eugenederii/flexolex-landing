@@ -21,6 +21,8 @@ export const en: Dictionary = {
     headlineLead: "Daily support for",
     headlineAccent: "comfortable movement",
     trust: "Fill in the form below and we'll call to confirm your order.",
+    playAriaLabel: "Play video",
+    replayAriaLabel: "Replay video",
   },
 
   trustStrip: {
