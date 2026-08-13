@@ -1,4 +1,7 @@
+"use client";
+
 import { priceText, pricing } from "@/data/site";
+import { useLanguage } from "@/components/LanguageProvider";
 import { cn } from "@/lib/cn";
 
 interface PriceDisplayProps {
@@ -30,6 +33,7 @@ export function PriceDisplay({
   className,
 }: PriceDisplayProps) {
   const dark = tone === "dark-bg";
+  const { t } = useLanguage();
 
   return (
     <div
@@ -46,7 +50,7 @@ export function PriceDisplay({
           dark ? "text-cream" : "text-navy-deep",
         )}
       >
-        <span className="sr-only">Promotional price </span>
+        <span className="sr-only">{t.priceDisplay.promoSr} </span>
         {priceText.current}
       </p>
 
@@ -58,7 +62,7 @@ export function PriceDisplay({
             dark ? "text-sky/70 decoration-sky/70" : "text-ink-muted decoration-ink-muted/70",
           )}
         >
-          <span className="sr-only">Original price </span>
+          <span className="sr-only">{t.priceDisplay.originalSr} </span>
           {priceText.original}
         </s>
 

@@ -1,19 +1,18 @@
+"use client";
+
 import { ArrowRight, Leaf, PhoneCall } from "lucide-react";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
+import { useLanguage } from "@/components/LanguageProvider";
 import { Button } from "@/components/ui/Button";
 import { HeroVideo } from "@/components/ui/HeroVideo";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { ProductPlaceholder } from "@/components/ui/ProductPlaceholder";
 import { Reveal } from "@/components/ui/Reveal";
 
-const copy = {
-  eyebrow: "Daily joint support",
-  headlineLead: "Daily support for",
-  headlineAccent: "comfortable movement",
-  trust: "Fill in the form below and we'll call to confirm your order.",
-};
-
 export function HeroSection() {
+  const { t } = useLanguage();
+  const copy = t.hero;
+
   return (
     <section
       id="hero"
@@ -122,7 +121,7 @@ export function HeroSection() {
                 size="lg"
                 className="w-full sm:w-auto"
               >
-                ORDER NOW
+                {t.common.orderNow}
                 <ArrowRight aria-hidden="true" className="size-5" strokeWidth={2.4} />
               </Button>
             </div>

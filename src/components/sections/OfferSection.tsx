@@ -1,23 +1,19 @@
+"use client";
+
 import { ArrowRight, Check } from "lucide-react";
 import { pricing } from "@/data/site";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
+import { useLanguage } from "@/components/LanguageProvider";
 import { Section } from "@/components/ui/Section";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { ProductPlaceholder } from "@/components/ui/ProductPlaceholder";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 
-const copy = {
-  eyebrow: "Special offer",
-  title: "Flexolex at 50% off",
-  paragraph: "This promotional price applies to orders placed through this page.",
-  points: [
-    "Only your name and phone number to get started",
-    "Our representative confirms every detail with you by phone",
-  ],
-};
-
 export function OfferSection() {
+  const { t } = useLanguage();
+  const copy = t.offer;
+
   return (
     <Section id="offer" tone="cream">
       <div className="container-page">
@@ -82,7 +78,7 @@ export function OfferSection() {
                   size="lg"
                   className="mt-8 w-full sm:w-auto"
                 >
-                  CLAIM 50% OFF
+                  {t.common.claimOff}
                   <ArrowRight aria-hidden="true" className="size-5" strokeWidth={2.4} />
                 </Button>
               </div>

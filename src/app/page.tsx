@@ -12,9 +12,9 @@ import { OfferSection } from "@/components/sections/OfferSection";
 import { OrderSection } from "@/components/sections/OrderSection";
 
 /**
- * Every section below is a server component except the ones that genuinely
- * need interactivity (header, reviews, order form) — see the "use client"
- * directives. Keeps the client bundle small.
+ * Nearly every section is a "use client" component because each one reads
+ * its copy from useLanguage() (see src/components/LanguageProvider.tsx) —
+ * that's what makes the EN/FIL switch instant with no page reload.
  *
  * Order form is the last major section — footer follows directly.
  */

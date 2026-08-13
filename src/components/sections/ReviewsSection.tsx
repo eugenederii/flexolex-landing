@@ -4,22 +4,19 @@ import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { reviews } from "@/data/reviews";
 import { cn } from "@/lib/cn";
+import { useLanguage } from "@/components/LanguageProvider";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ReviewCard } from "@/components/ui/ReviewCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 
-const copy = {
-  eyebrow: "In their words",
-  title: "What daily use actually looks like",
-  lead: "Short notes from people who fitted Flexolex into a routine they already had.",
-};
-
 /** How many cards the desktop grid shows before “Show more reviews”. */
 const INITIAL_VISIBLE = 6;
 
 export function ReviewsSection() {
+  const { t } = useLanguage();
+  const copy = t.reviews;
   const [expanded, setExpanded] = useState(false);
   const trackRef = useRef<HTMLUListElement>(null);
 
@@ -79,16 +76,16 @@ export function ReviewsSection() {
             <button
               type="button"
               onClick={() => scrollTrack(-1)}
-              aria-label="Previous reviews"
+              aria-label={copy.prevAriaLabel}
               className="grid size-12 place-items-center rounded-full border border-line bg-surface text-navy shadow-soft active:bg-sky-mist"
             >
               <ChevronLeft aria-hidden="true" className="size-5" strokeWidth={2.2} />
             </button>
-            <p className="text-sm font-semibold text-ink-muted">Swipe for more</p>
+            <p className="text-sm font-semibold text-ink-muted">{copy.swipeHint}</p>
             <button
               type="button"
               onClick={() => scrollTrack(1)}
-              aria-label="More reviews"
+              aria-label={copy.nextAriaLabel}
               className="grid size-12 place-items-center rounded-full border border-line bg-surface text-navy shadow-soft active:bg-sky-mist"
             >
               <ChevronRight aria-hidden="true" className="size-5" strokeWidth={2.2} />
@@ -104,9 +101,7 @@ export function ReviewsSection() {
               onClick={() => setExpanded((open) => !open)}
               aria-expanded={expanded}
             >
-              {expanded
-                ? "Show fewer reviews"
-                : `Show more reviews (${rest.length - INITIAL_VISIBLE})`}
+              {expanded ? copy.showFewer : copy.showMore(rest.length - INITIAL_VISIBLE)}
             </Button>
           </div>
         )}

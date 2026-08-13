@@ -1,20 +1,17 @@
+"use client";
+
 import { assets } from "@/data/assets";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
+import { useLanguage } from "@/components/LanguageProvider";
 import { Section } from "@/components/ui/Section";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 
-const copy = {
-  eyebrow: "Everyday movement",
-  title: "The things you already do every day",
-  paragraph:
-    "Walking to the sari-sari store. Going up and down the stairs. An afternoon in the garden, or just keeping up with the grandkids. These are the moments Flexolex is meant to support, so you can keep doing them comfortably.",
-  activities: ["Walking", "Gardening", "Household chores", "Market runs", "Stairs at home", "Time with family"],
-  notes: ["Made for daily use", "For adults 25 and over", "One simple routine"],
-};
-
 export function LifestyleSection() {
+  const { t } = useLanguage();
+  const copy = t.lifestyle;
+
   return (
     <Section id="lifestyle" tone="navy" className="grain">
       <div
@@ -67,7 +64,7 @@ export function LifestyleSection() {
                 size="lg"
                 className="mt-9 w-full sm:w-auto"
               >
-                GET FLEXOLEX
+                {t.common.getFlexolex}
               </Button>
             </Reveal>
           </div>
@@ -77,7 +74,7 @@ export function LifestyleSection() {
             <div className="grid grid-cols-2 gap-4 sm:gap-5">
               <ImagePlaceholder
                 asset={assets.lifestyleCouple}
-                label="Walking together"
+                label={copy.imageLabels.couple}
                 aspect="aspect-[3/4]"
                 variant={0}
                 rounded="rounded-[1.5rem]"
@@ -86,7 +83,7 @@ export function LifestyleSection() {
               <div className="mt-8 flex flex-col gap-4 sm:mt-12 sm:gap-5">
                 <ImagePlaceholder
                   asset={assets.lifestyleFamily}
-                  label="Sunday at home"
+                  label={copy.imageLabels.family}
                   aspect="aspect-square"
                   variant={3}
                   rounded="rounded-[1.5rem]"
@@ -94,7 +91,7 @@ export function LifestyleSection() {
                 />
                 <ImagePlaceholder
                   asset={assets.lifestyleStairs}
-                  label="Stairs at home"
+                  label={copy.imageLabels.stairs}
                   aspect="aspect-[4/5]"
                   variant={2}
                   rounded="rounded-[1.5rem]"

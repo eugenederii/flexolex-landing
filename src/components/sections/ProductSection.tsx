@@ -1,19 +1,12 @@
+"use client";
+
 import { Handshake, Leaf, type LucideIcon } from "lucide-react";
 import { brand } from "@/data/site";
+import { useLanguage } from "@/components/LanguageProvider";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProductPlaceholder } from "@/components/ui/ProductPlaceholder";
 import { Reveal } from "@/components/ui/Reveal";
-
-const copy = {
-  eyebrow: "The product",
-  title: (
-    <>
-      Meet <span className="text-navy">Flexolex</span>
-    </>
-  ),
-  lead: "A daily joint-support product made to fit naturally into your routine.",
-};
 
 interface Point {
   icon: LucideIcon;
@@ -24,19 +17,9 @@ interface Point {
 /**
  * Kept to exactly the two ideas the trust strip above doesn't already cover
  * (daily/routine/everyday movement is said there — no need to say it twice).
+ * Icons are fixed; title/description come from the active dictionary.
  */
-const points: Point[] = [
-  {
-    icon: Leaf,
-    title: "A daily wellness product",
-    description: "Not a medicine, and not a replacement for medical care.",
-  },
-  {
-    icon: Handshake,
-    title: "Straightforward from the start",
-    description: "One price, one short form, one confirmation call. No hidden steps.",
-  },
-];
+const POINT_ICONS: [LucideIcon, LucideIcon] = [Leaf, Handshake];
 
 function PointBlock({ point, align }: { point: Point; align: "left" | "right" }) {
   const Icon = point.icon;
@@ -60,13 +43,23 @@ function PointBlock({ point, align }: { point: Point; align: "left" | "right" })
 }
 
 export function ProductSection() {
+  const { t } = useLanguage();
+  const points: Point[] = t.product.points.map((point, index) => ({
+    ...point,
+    icon: POINT_ICONS[index],
+  }));
+
   return (
     <Section id="product" tone="cream">
       <div className="container-page">
         <SectionHeading
-          eyebrow={copy.eyebrow}
-          title={copy.title}
-          lead={copy.lead}
+          eyebrow={t.product.eyebrow}
+          title={
+            <>
+              {t.product.titleLead} <span className="text-navy">{brand.name}</span>
+            </>
+          }
+          lead={t.product.lead}
           align="center"
         />
 
@@ -91,7 +84,7 @@ export function ProductSection() {
                 className="relative w-full drop-shadow-[0_30px_40px_rgba(11,46,99,0.22)]"
               />
               <p className="mt-2 text-center font-sans text-xs font-bold tracking-[0.2em] text-ink-muted uppercase">
-                {brand.name} · {brand.category}
+                {brand.name} · {t.common.categoryLabel}
               </p>
             </div>
           </Reveal>

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { bodyFont, displayFont } from "@/lib/fonts";
 import { brand } from "@/data/site";
+import { LanguageProvider } from "@/components/LanguageProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -31,13 +32,22 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-PH" className={`${displayFont.variable} ${bodyFont.variable}`}>
-      {/* suppressHydrationWarning: some browser extensions (e.g. ColorZilla's
-          cz-shortcut-listen) inject attributes onto <body> before React
-          hydrates. That's a real DOM mismatch, but not a bug in this app —
-          this tells React to ignore attribute diffs on this one node instead
-          of logging a false-positive hydration error for every visitor who
-          has such an extension installed. */}
+    <html
+      lang="en"
+      className={`${displayFont.variable} ${bodyFont.variable}`}
+      suppressHydrationWarning
+    >
+      {/* suppressHydrationWarning on <html>: LanguageProvider updates the
+          `lang` attribute client-side once it knows the visitor's saved
+          preference (see src/components/LanguageProvider.tsx) — every new
+          visitor still gets an English first paint, so there's nothing to
+          mismatch, just an attribute React shouldn't warn about re-syncing. */}
+      {/* suppressHydrationWarning on <body>: some browser extensions (e.g.
+          ColorZilla's cz-shortcut-listen) inject attributes onto <body>
+          before React hydrates. That's a real DOM mismatch, but not a bug in
+          this app — this tells React to ignore attribute diffs on this one
+          node instead of logging a false-positive hydration error for every
+          visitor who has such an extension installed. */}
       <body className="antialiased" suppressHydrationWarning>
         <a
           href="#main"
@@ -45,7 +55,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

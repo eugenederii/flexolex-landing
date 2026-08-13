@@ -2,13 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { brand, navLinks } from "@/data/site";
+import { brand } from "@/data/site";
 import { ORDER_SECTION_ID, scrollToId } from "@/lib/scrollToOrder";
 import { cn } from "@/lib/cn";
+import { useLanguage } from "@/components/LanguageProvider";
 import { Button } from "@/components/ui/Button";
 import { Wordmark } from "@/components/ui/Wordmark";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 
 export function Header() {
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -52,38 +55,38 @@ export function Header() {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
           className="mr-auto shrink-0 rounded-md"
-          aria-label={`${brand.name} — back to top`}
+          aria-label={`${brand.name} — ${t.header.backToTop}`}
         >
           <Wordmark />
         </a>
 
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex items-center gap-1">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    goTo(link.href);
-                  }}
-                  className="inline-flex min-h-11 items-center rounded-full px-4 text-base font-semibold text-ink-soft transition-colors duration-200 hover:bg-sky-mist hover:text-navy"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            <li>
+              <a
+                href="#reviews"
+                onClick={(event) => {
+                  event.preventDefault();
+                  goTo("#reviews");
+                }}
+                className="inline-flex min-h-11 items-center rounded-full px-4 text-base font-semibold text-ink-soft transition-colors duration-200 hover:bg-sky-mist hover:text-navy"
+              >
+                {t.header.navReviews}
+              </a>
+            </li>
           </ul>
         </nav>
+
+        <LanguageSwitcher />
 
         {/* Wrapping div carries the responsive visibility: Button's own base
             class always includes `inline-flex`, which — at equal specificity —
             beats a conditional `hidden` placed directly on the button itself
             in Tailwind's cascade. Toggling display on a parent avoids the
             conflict entirely. */}
-        <div className="hidden sm:block lg:ml-4">
+        <div className="hidden sm:block">
           <Button scrollTo={ORDER_SECTION_ID} trackingSource="Header" size="sm">
-            ORDER NOW
+            {t.common.orderNow}
           </Button>
         </div>
 
@@ -92,7 +95,7 @@ export function Header() {
           onClick={() => setMenuOpen((open) => !open)}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-label={menuOpen ? t.header.closeMenu : t.header.openMenu}
           className="grid size-10 shrink-0 place-items-center rounded-full border border-line bg-surface text-navy transition-colors hover:bg-sky-mist sm:size-11 lg:hidden"
         >
           {menuOpen ? (
@@ -115,20 +118,18 @@ export function Header() {
       >
         <nav aria-label="Mobile" className="container-page py-3">
           <ul className="flex flex-col">
-            {navLinks.map((link) => (
-              <li key={link.href} className="border-b border-line/70 last:border-0">
-                <a
-                  href={link.href}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    goTo(link.href);
-                  }}
-                  className="flex min-h-13 items-center text-lg font-semibold text-ink"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            <li className="border-b border-line/70 last:border-0">
+              <a
+                href="#reviews"
+                onClick={(event) => {
+                  event.preventDefault();
+                  goTo("#reviews");
+                }}
+                className="flex min-h-13 items-center text-lg font-semibold text-ink"
+              >
+                {t.header.navReviews}
+              </a>
+            </li>
           </ul>
 
           {/* See the note on the desktop CTA above — visibility toggles on
@@ -140,7 +141,7 @@ export function Header() {
               onClick={() => setMenuOpen(false)}
               fullWidth
             >
-              ORDER NOW
+              {t.common.orderNow}
             </Button>
           </div>
         </nav>

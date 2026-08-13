@@ -1,4 +1,4 @@
-import type { LeadFormErrors, LeadFormValues } from "@/types";
+import type { LeadFormErrorCodes, LeadFormValues } from "@/types";
 import { getParams } from "./urlParams";
 
 /* ==========================================================================
@@ -26,28 +26,30 @@ export function formatPhoneInput(raw: string): string {
 /**
  * Basic frontend validation only.
  *
+ * Returns locale-agnostic error codes, not display strings — this module
+ * doesn't know which language is active. The caller (OrderSection) maps
+ * each code to a translated message via the active dictionary.
+ *
  * TODO: tighten to full Philippine mobile validation once the affiliate API's
  * accepted formats are confirmed. The shapes we expect are `09XXXXXXXXX`,
  * `+639XXXXXXXXX` and `639XXXXXXXXX` — the check below already accepts those
  * while staying forgiving enough not to reject a real customer.
  */
-export function validateLeadForm(values: LeadFormValues): LeadFormErrors {
-  const errors: LeadFormErrors = {};
+export function validateLeadForm(values: LeadFormValues): LeadFormErrorCodes {
+  const errors: LeadFormErrorCodes = {};
 
   const name = values.fullName.trim();
-  if (name.length === 0) {
-    errors.fullName = "Please enter your full name.";
-  } else if (name.length < 2) {
-    errors.fullName = "Please enter your full name.";
+  if (name.length < 2) {
+    errors.fullName = "required";
   }
 
   const phone = normalisePhone(values.phone);
   const digits = phone.replace(/\D/g, "");
 
   if (digits.length === 0) {
-    errors.phone = "Please enter your phone number.";
+    errors.phone = "required";
   } else if (digits.length < 10 || digits.length > 13) {
-    errors.phone = "Please enter a valid phone number, e.g. 0912 345 6789.";
+    errors.phone = "invalid";
   }
 
   return errors;

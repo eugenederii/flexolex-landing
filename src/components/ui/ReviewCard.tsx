@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { Star } from "lucide-react";
 import type { Review } from "@/types";
+import { useLanguage } from "@/components/LanguageProvider";
 import { cn } from "@/lib/cn";
 
 interface ReviewCardProps {
@@ -18,9 +21,9 @@ function initials(name: string): string {
     .join("");
 }
 
-function Rating({ value }: { value: number }) {
+function Rating({ value, ariaLabel }: { value: number; ariaLabel: string }) {
   return (
-    <p className="flex items-center gap-0.5" aria-label={`Rated ${value} out of 5`}>
+    <p className="flex items-center gap-0.5" aria-label={ariaLabel}>
       {Array.from({ length: 5 }, (_, index) => (
         <Star
           key={index}
@@ -37,6 +40,8 @@ function Rating({ value }: { value: number }) {
 }
 
 export function ReviewCard({ review, featured = false, className }: ReviewCardProps) {
+  const { locale, t } = useLanguage();
+
   return (
     <figure
       className={cn(
@@ -62,7 +67,7 @@ export function ReviewCard({ review, featured = false, className }: ReviewCardPr
           featured ? "text-lg sm:text-xl sm:leading-[1.6]" : "text-base",
         )}
       >
-        {review.quote}
+        {review.quote[locale]}
       </blockquote>
 
       <figcaption className="mt-6 flex items-start gap-3.5 border-t border-line pt-5">
@@ -91,7 +96,9 @@ export function ReviewCard({ review, featured = false, className }: ReviewCardPr
             <p className="text-sm text-ink-muted">
               {review.age} · {review.city}
             </p>
-            {review.rating !== undefined && <Rating value={review.rating} />}
+            {review.rating !== undefined && (
+              <Rating value={review.rating} ariaLabel={t.reviews.ratedAriaLabel(review.rating)} />
+            )}
           </div>
         </div>
       </figcaption>

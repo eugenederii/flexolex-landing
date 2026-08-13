@@ -8,33 +8,28 @@ import {
   submitLead,
   validateLeadForm,
 } from "@/lib/leadForm";
-import type { LeadFormErrors, LeadFormValues, LeadSubmitStatus } from "@/types";
+import type { LeadFormErrorCodes, LeadFormErrors, LeadFormValues, LeadSubmitStatus } from "@/types";
+import { useLanguage } from "@/components/LanguageProvider";
+import type { Dictionary } from "@/data/locales";
 import { Section } from "@/components/ui/Section";
 import { FormInput } from "@/components/ui/FormInput";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 
-const copy = {
-  eyebrow: "Order",
-  title: "Order Flexolex",
-  lead: "Enter your details and we'll call to confirm your order.",
-  nameLabel: "Full name",
-  namePlaceholder: "Juan Dela Cruz",
-  phoneLabel: "Phone number",
-  phonePlaceholder: "09XX XXX XXXX",
-  phoneHint: "We will call this number to confirm your order.",
-  submit: "ORDER NOW",
-  submitting: "Sending…",
-  privacy: "Your details are used only to contact you about this order.",
-  failure: "Something went wrong. Please check your details and try again.",
-  successTitle: "Thank you!",
-  successBody: "Your request has been received.",
-  successNote: "Our representative will contact you shortly to confirm your order.",
-};
-
 const emptyValues: LeadFormValues = { fullName: "", phone: "" };
 
+/** Maps locale-agnostic validation codes to the active dictionary's strings. */
+function toDisplayErrors(codes: LeadFormErrorCodes, order: Dictionary["order"]): LeadFormErrors {
+  const errors: LeadFormErrors = {};
+  if (codes.fullName) errors.fullName = order.errorNameRequired;
+  if (codes.phone === "required") errors.phone = order.errorPhoneRequired;
+  if (codes.phone === "invalid") errors.phone = order.errorPhoneInvalid;
+  return errors;
+}
+
 export function OrderSection() {
+  const { t } = useLanguage();
+  const copy = t.order;
   const formId = useId();
   const [values, setValues] = useState<LeadFormValues>(emptyValues);
   const [errors, setErrors] = useState<LeadFormErrors>({});
@@ -50,7 +45,7 @@ export function OrderSection() {
     // Only correct errors live once the visitor has already tried to submit —
     // shouting at someone mid-typing is the fastest way to lose them.
     if (submitted) {
-      setErrors(validateLeadForm({ ...values, [field]: value }));
+      setErrors(toDisplayErrors(validateLeadForm({ ...values, [field]: value }), copy));
     }
   };
 
@@ -61,11 +56,12 @@ export function OrderSection() {
     // Bot trap: real people never fill a field they cannot see.
     if (honeypotRef.current?.value) return;
 
-    const nextErrors = validateLeadForm(values);
+    const nextCodes = validateLeadForm(values);
+    const nextErrors = toDisplayErrors(nextCodes, copy);
     setErrors(nextErrors);
 
-    if (Object.keys(nextErrors).length > 0) {
-      const firstField = Object.keys(nextErrors)[0] as keyof LeadFormValues;
+    if (Object.keys(nextCodes).length > 0) {
+      const firstField = Object.keys(nextCodes)[0] as keyof LeadFormValues;
       document.getElementById(`${formId}-${firstField}`)?.focus();
       return;
     }
@@ -143,9 +139,7 @@ export function OrderSection() {
                 <p className="mt-4 text-lg text-ink-soft">{copy.successBody}</p>
                 <p className="mt-2 text-lg font-semibold text-navy">{copy.successNote}</p>
 
-                <p className="mt-8 max-w-xs text-sm text-ink-muted">
-                  Please keep your phone nearby so you do not miss the call.
-                </p>
+                <p className="mt-8 max-w-xs text-sm text-ink-muted">{copy.successFooter}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate>
@@ -207,7 +201,7 @@ export function OrderSection() {
                   disabled={status === "submitting"}
                   className="mt-8"
                 >
-                  {status === "submitting" ? copy.submitting : copy.submit}
+                  {status === "submitting" ? copy.submitting : t.common.orderNow}
                 </Button>
 
                 <p className="mt-5 flex items-start gap-2.5 text-sm text-ink-muted">

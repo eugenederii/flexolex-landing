@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { priceText, pricing } from "@/data/site";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
+import { useLanguage } from "@/components/LanguageProvider";
 import { cn } from "@/lib/cn";
 import { Button } from "./Button";
 
@@ -16,6 +17,7 @@ import { Button } from "./Button";
  * footer content. Sits above the iOS home indicator via env(safe-area-inset-bottom).
  */
 export function StickyMobileCTA() {
+  const { t } = useLanguage();
   const [pastHero, setPastHero] = useState(false);
   const [atForm, setAtForm] = useState(false);
   const [atFooter, setAtFooter] = useState(false);
@@ -90,7 +92,7 @@ export function StickyMobileCTA() {
           className="ml-auto grow-0"
           tabIndex={visible ? undefined : -1}
         >
-          ORDER NOW
+          {t.common.orderNow}
           <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.4} />
         </Button>
       </div>

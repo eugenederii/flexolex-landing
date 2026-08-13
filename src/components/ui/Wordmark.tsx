@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { brand } from "@/data/site";
+import { useLanguage } from "@/components/LanguageProvider";
 import { cn } from "@/lib/cn";
 
 interface WordmarkProps {
@@ -21,6 +24,7 @@ export function Wordmark({
   showCategory = false,
 }: WordmarkProps) {
   const light = tone === "light-text";
+  const { t } = useLanguage();
 
   return (
     <span className={cn("flex items-center gap-2 sm:gap-2.5", className)}>
@@ -49,7 +53,7 @@ export function Wordmark({
               light ? "text-sky" : "text-ink-muted",
             )}
           >
-            {brand.category}
+            {t.common.categoryLabel}
           </span>
         )}
       </span>
