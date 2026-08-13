@@ -1,0 +1,228 @@
+"use client";
+
+import { useId, useRef, useState, type FormEvent } from "react";
+import { CheckCircle2, Phone, ShieldCheck, User } from "lucide-react";
+import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
+import {
+  formatPhoneInput,
+  submitLead,
+  validateLeadForm,
+} from "@/lib/leadForm";
+import type { LeadFormErrors, LeadFormValues, LeadSubmitStatus } from "@/types";
+import { Section } from "@/components/ui/Section";
+import { FormInput } from "@/components/ui/FormInput";
+import { Button } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
+
+const copy = {
+  eyebrow: "Order",
+  title: "Order Flexolex",
+  lead: "Enter your details and we'll call to confirm your order.",
+  nameLabel: "Full name",
+  namePlaceholder: "Juan Dela Cruz",
+  phoneLabel: "Phone number",
+  phonePlaceholder: "09XX XXX XXXX",
+  phoneHint: "We will call this number to confirm your order.",
+  submit: "ORDER NOW",
+  submitting: "Sending…",
+  privacy: "Your details are used only to contact you about this order.",
+  failure: "Something went wrong. Please check your details and try again.",
+  successTitle: "Thank you!",
+  successBody: "Your request has been received.",
+  successNote: "Our representative will contact you shortly to confirm your order.",
+};
+
+const emptyValues: LeadFormValues = { fullName: "", phone: "" };
+
+export function OrderSection() {
+  const formId = useId();
+  const [values, setValues] = useState<LeadFormValues>(emptyValues);
+  const [errors, setErrors] = useState<LeadFormErrors>({});
+  const [status, setStatus] = useState<LeadSubmitStatus>("idle");
+  const [submitted, setSubmitted] = useState(false);
+  const successRef = useRef<HTMLParagraphElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
+
+  const setField = (field: keyof LeadFormValues) => (raw: string) => {
+    const value = field === "phone" ? formatPhoneInput(raw) : raw;
+    setValues((current) => ({ ...current, [field]: value }));
+
+    // Only correct errors live once the visitor has already tried to submit —
+    // shouting at someone mid-typing is the fastest way to lose them.
+    if (submitted) {
+      setErrors(validateLeadForm({ ...values, [field]: value }));
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitted(true);
+
+    // Bot trap: real people never fill a field they cannot see.
+    if (honeypotRef.current?.value) return;
+
+    const nextErrors = validateLeadForm(values);
+    setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      const firstField = Object.keys(nextErrors)[0] as keyof LeadFormValues;
+      document.getElementById(`${formId}-${firstField}`)?.focus();
+      return;
+    }
+
+    setStatus("submitting");
+    const result = await submitLead(values);
+
+    if (!result.ok) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("success");
+    window.setTimeout(() => successRef.current?.focus(), 60);
+
+    /*
+     * TODO: Affiliate API integration.
+     * `submitLead` currently resolves locally (see lib/leadForm.ts) — nothing
+     * is sent anywhere yet. Once the real API call is in place, and ONLY here,
+     * inside this confirmed-success branch, fire the conversion:
+     *
+     *   trackLead(result.leadId!, pricing.current);
+     *
+     * Never on click, never on validation passing, never optimistically.
+     */
+  };
+
+  const succeeded = status === "success";
+
+  return (
+    <Section
+      id={ORDER_SECTION_ID}
+      tone="deep"
+      bare
+      className="grain scroll-mt-24 pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-16"
+    >
+      <div className="container-page">
+        <Reveal className="mx-auto max-w-xl text-center">
+          <p className="eyebrow justify-center">
+            <span aria-hidden="true" className="h-px w-6 bg-navy/40" />
+            {copy.eyebrow}
+          </p>
+          <h2
+            data-scroll-focus
+            tabIndex={-1}
+            className="mt-4 text-3xl outline-none sm:text-4xl"
+          >
+            {copy.title}
+          </h2>
+          <p className="mt-5 text-lg text-ink-soft">{copy.lead}</p>
+        </Reveal>
+
+        <Reveal className="mt-10 lg:mt-14">
+          <div className="mx-auto max-w-xl overflow-hidden rounded-[1.5rem] bg-surface p-7 shadow-lift sm:p-9 lg:rounded-[2rem] lg:p-10">
+            {succeeded ? (
+              <div
+                role="status"
+                aria-live="polite"
+                className="animate-slide-up-in flex flex-col items-center py-6 text-center"
+              >
+                <span
+                  aria-hidden="true"
+                  className="grid size-18 place-items-center rounded-full bg-sky-mist text-navy"
+                >
+                  <CheckCircle2 className="size-9" strokeWidth={1.8} />
+                </span>
+
+                <p
+                  ref={successRef}
+                  tabIndex={-1}
+                  className="mt-6 font-display text-3xl font-bold tracking-[-0.02em] text-ink outline-none"
+                >
+                  {copy.successTitle}
+                </p>
+                <p className="mt-4 text-lg text-ink-soft">{copy.successBody}</p>
+                <p className="mt-2 text-lg font-semibold text-navy">{copy.successNote}</p>
+
+                <p className="mt-8 max-w-xs text-sm text-ink-muted">
+                  Please keep your phone nearby so you do not miss the call.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} noValidate>
+                <div className="space-y-6">
+                  <FormInput
+                    id={`${formId}-fullName`}
+                    name="fullName"
+                    label={copy.nameLabel}
+                    placeholder={copy.namePlaceholder}
+                    autoComplete="name"
+                    value={values.fullName}
+                    onChange={(event) => setField("fullName")(event.target.value)}
+                    error={errors.fullName}
+                    icon={<User className="size-5" strokeWidth={1.9} />}
+                    required
+                  />
+
+                  <FormInput
+                    id={`${formId}-phone`}
+                    name="phone"
+                    type="tel"
+                    inputMode="tel"
+                    label={copy.phoneLabel}
+                    placeholder={copy.phonePlaceholder}
+                    autoComplete="tel"
+                    hint={copy.phoneHint}
+                    value={values.phone}
+                    onChange={(event) => setField("phone")(event.target.value)}
+                    error={errors.phone}
+                    icon={<Phone className="size-5" strokeWidth={1.9} />}
+                    required
+                  />
+
+                  {/* Honeypot — hidden from people and from assistive tech */}
+                  <input
+                    ref={honeypotRef}
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute h-0 w-0 opacity-0"
+                  />
+                </div>
+
+                {status === "error" && (
+                  <p
+                    role="alert"
+                    className="mt-6 rounded-xl bg-danger/8 p-4 text-sm font-semibold text-danger"
+                  >
+                    {copy.failure}
+                  </p>
+                )}
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  fullWidth
+                  disabled={status === "submitting"}
+                  className="mt-8"
+                >
+                  {status === "submitting" ? copy.submitting : copy.submit}
+                </Button>
+
+                <p className="mt-5 flex items-start gap-2.5 text-sm text-ink-muted">
+                  <ShieldCheck
+                    aria-hidden="true"
+                    className="mt-0.5 size-4.5 shrink-0 text-navy"
+                    strokeWidth={2}
+                  />
+                  {copy.privacy}
+                </p>
+              </form>
+            )}
+          </div>
+        </Reveal>
+      </div>
+    </Section>
+  );
+}
