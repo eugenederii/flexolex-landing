@@ -10,9 +10,8 @@ import type { Review } from "@/types";
    TODO: replace every entry below with supplied, verified customer content
    before this page goes live, then set `reviewsArePlaceholder` to false.
 
-   Avatars are null on purpose — no stock photos have been sourced. The card
-   falls back to an initials monogram. When real photos arrive, set
-   `avatar: "/assets/testimonials/<file>.jpg"`.
+   Avatars point to /public/assets/testimonials — generated portraits used as
+   placeholders until real customer photos are supplied.
    ========================================================================== */
 
 export const reviewsArePlaceholder = true;
@@ -24,8 +23,8 @@ export const reviews: Review[] = [
     age: 54,
     city: "Quezon City",
     quote:
-      "I take it every morning with my coffee. Naging bahagi na ng routine ko — it is the easiest part of my day.",
-    avatar: null,
+      "I usually take mine after breakfast, bago ako mag-start sa mga gawain sa bahay. After a few days, naging automatic na lang siya for me.",
+    avatar: "/assets/testimonials/maria-santos.png",
     rating: 5,
   },
   {
@@ -34,8 +33,8 @@ export const reviews: Review[] = [
     age: 61,
     city: "Manila",
     quote:
-      "Simple lang. One product, one time a day. I do not have to think about it, and that is why I still take it.",
-    avatar: null,
+      "Honestly, I like that there is nothing complicated about it. I keep it beside my coffee so I don’t forget in the morning.",
+    avatar: "/assets/testimonials/ernesto-villanueva.png",
     rating: 5,
   },
   {
@@ -44,8 +43,8 @@ export const reviews: Review[] = [
     age: 58,
     city: "Cebu City",
     quote:
-      "My husband and I take it together after breakfast. It became our small routine and we like keeping it.",
-    avatar: null,
+      "My husband started taking his first, then I joined him. Ngayon sabay na kami after breakfast. Small thing, but it works well with our morning.",
+    avatar: "/assets/testimonials/lourdes-aquino.png",
     rating: 5,
   },
   {
@@ -54,8 +53,8 @@ export const reviews: Review[] = [
     age: 63,
     city: "Davao City",
     quote:
-      "I walk every morning around our village. Adding this to the routine was easy — no fuss, no complicated schedule.",
-    avatar: null,
+      "I’m usually out early for my morning walk. I just take this before I leave the house and that’s it. Walang hassle.",
+    avatar: "/assets/testimonials/rodolfo-cruz.png",
     rating: 4,
   },
   {
@@ -64,8 +63,8 @@ export const reviews: Review[] = [
     age: 49,
     city: "Pasig",
     quote:
-      "The ordering was straightforward. Someone called me to confirm and explained everything clearly.",
-    avatar: null,
+      "I was a little unsure when I ordered online, but the call afterwards was clear and polite. They explained everything without rushing me.",
+    avatar: "/assets/testimonials/teresita-ramos.png",
     rating: 5,
   },
   {
@@ -74,8 +73,8 @@ export const reviews: Review[] = [
     age: 66,
     city: "Makati",
     quote:
-      "At my age I want things that are simple to follow. This one I actually remember to take.",
-    avatar: null,
+      "At 66, ayoko na talaga ng maraming steps at instructions. This one is straightforward, so I actually remember to take it.",
+    avatar: "/assets/testimonials/alfredo-bautista.png",
     rating: 5,
   },
   {
@@ -84,8 +83,8 @@ export const reviews: Review[] = [
     age: 52,
     city: "Taguig",
     quote:
-      "I keep it beside the kettle so I see it every morning. Sanay na ako — it is part of the day now.",
-    avatar: null,
+      "I leave it near the kettle because I know I’ll see it every morning. Simple trick, pero effective para hindi ko makalimutan.",
+    avatar: "/assets/testimonials/corazon-dela-cruz.png",
     rating: 5,
   },
   {
@@ -94,8 +93,8 @@ export const reviews: Review[] = [
     age: 57,
     city: "Quezon City",
     quote:
-      "I like that the packaging is clear and easy to read. Hindi maliit ang letters, which I appreciate.",
-    avatar: null,
+      "The label is actually readable, which I appreciate. Hindi sobrang liit ng sulat and the packaging looks clean.",
+    avatar: "/assets/testimonials/benjamin-reyes.png",
     rating: 4,
   },
   {
@@ -104,8 +103,8 @@ export const reviews: Review[] = [
     age: 60,
     city: "Manila",
     quote:
-      "Gardening is my hobby and I am outside most mornings. Taking this is one less thing to think about.",
-    avatar: null,
+      "I spend a lot of mornings outside with my plants. I take this before I head to the garden, then I just go on with my day.",
+    avatar: "/assets/testimonials/remedios-garcia.png",
     rating: 5,
   },
   {
@@ -114,8 +113,8 @@ export const reviews: Review[] = [
     age: 55,
     city: "Cebu City",
     quote:
-      "Ordering took me less than a minute. I only had to give my name and my number.",
-    avatar: null,
+      "Ordering was quicker than I expected. Name, phone number, then someone called me to confirm. Yun lang.",
+    avatar: "/assets/testimonials/ricardo-mendoza.png",
     rating: 5,
   },
   {
@@ -124,8 +123,8 @@ export const reviews: Review[] = [
     age: 64,
     city: "Pasig",
     quote:
-      "My daughter ordered it for me. She said it is easy to take daily, and she was right.",
-    avatar: null,
+      "My daughter was the one who showed this to me and helped me order. Now I don’t even need her to remind me anymore.",
+    avatar: "/assets/testimonials/josefina-torres.png",
     rating: 5,
   },
   {
@@ -134,8 +133,8 @@ export const reviews: Review[] = [
     age: 59,
     city: "Davao City",
     quote:
-      "I bring the container with me when we travel to the province. Small enough, no hassle.",
-    avatar: null,
+      "I brought it with me when we stayed in the province for a few days. Small enough to pack, so no problem bringing it along.",
+    avatar: "/assets/testimonials/danilo-navarro.png",
     rating: 4,
   },
   {
@@ -144,8 +143,8 @@ export const reviews: Review[] = [
     age: 51,
     city: "Makati",
     quote:
-      "I wanted something I could keep up with for a long time, not just for one week. This fits.",
-    avatar: null,
+      "I wanted something that wouldn’t make my mornings more complicated. This fits in quietly with everything else I already do.",
+    avatar: "/assets/testimonials/angelita-fernandez.png",
     rating: 5,
   },
   {
@@ -154,8 +153,8 @@ export const reviews: Review[] = [
     age: 68,
     city: "Taguig",
     quote:
-      "The representative was polite on the phone and did not rush me. Malinaw ang paliwanag.",
-    avatar: null,
+      "The person who called was patient, which I liked. Hindi minadali yung conversation and I had time to ask my questions.",
+    avatar: "/assets/testimonials/wilfredo-domingo.png",
     rating: 5,
   },
   {
@@ -164,8 +163,8 @@ export const reviews: Review[] = [
     age: 47,
     city: "Quezon City",
     quote:
-      "I am on my feet the whole day at home. Keeping a steady daily routine matters to me, and this is part of it.",
-    avatar: null,
+      "I’m on my feet most of the day doing things around the house. I keep this with my morning things so I see it before the day gets busy.",
+    avatar: "/assets/testimonials/elena-pascual.png",
     rating: 5,
   },
 ];
