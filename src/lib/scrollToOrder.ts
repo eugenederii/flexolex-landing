@@ -12,6 +12,17 @@ export const ORDER_HREF = `#${ORDER_SECTION_ID}` as const;
 /** Sticky header height, so the target does not land underneath it. */
 const HEADER_OFFSET = 84;
 
+/**
+ * The order form scrolls in past its own top rather than stopping right at
+ * it. The header hides itself on any downward scroll (see Header.tsx), so
+ * there's no longer a bar to clear here — and landing exactly at the top
+ * left the previous section's card hanging in view with a lot of dead
+ * space below it. A negative offset scrolls further, tucking that card
+ * mostly out of view and settling with the form comfortably framed
+ * (a little of the footer visible below is expected, not a bug).
+ */
+const ORDER_SCROLL_OFFSET = -56;
+
 function prefersReducedMotion(): boolean {
   return (
     typeof window !== "undefined" &&
@@ -19,14 +30,13 @@ function prefersReducedMotion(): boolean {
   );
 }
 
-export function scrollToId(id: string, focusTarget = false): void {
+export function scrollToId(id: string, focusTarget = false, offset = HEADER_OFFSET): void {
   if (typeof document === "undefined") return;
 
   const target = document.getElementById(id);
   if (!target) return;
 
-  const top =
-    target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+  const top = target.getBoundingClientRect().top + window.scrollY - offset;
 
   window.scrollTo({
     top: Math.max(top, 0),
@@ -51,5 +61,5 @@ export function scrollToId(id: string, focusTarget = false): void {
  */
 export function scrollToOrder(source: string): void {
   trackViewContent(`CTA: ${source}`);
-  scrollToId(ORDER_SECTION_ID, true);
+  scrollToId(ORDER_SECTION_ID, true, ORDER_SCROLL_OFFSET);
 }

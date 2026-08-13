@@ -20,8 +20,15 @@ export function Header() {
   // top, and a small delta threshold keeps mobile rubber-band jitter from
   // flickering it. Re-runs on menuOpen so opening the menu resets the
   // reference point instead of hiding the header out from under it later.
+  //
+  // The reference point only updates every ~120ms rather than on every
+  // 'scroll' event: a JS-triggered smooth scroll (e.g. an ORDER NOW click)
+  // fires many events with a couple of pixels of delta each, which never
+  // individually crosses the threshold below — comparing against a point
+  // 120ms back instead reliably sees the real, larger movement.
   useEffect(() => {
     let lastY = window.scrollY;
+    let lastCheck = 0;
 
     const onScroll = () => {
       const currentY = window.scrollY;
@@ -29,13 +36,22 @@ export function Header() {
 
       if (menuOpen) {
         lastY = currentY;
+        lastCheck = 0;
         return;
       }
 
-      const delta = currentY - lastY;
       if (currentY < 80) {
         setHidden(false);
-      } else if (delta > 8) {
+        lastY = currentY;
+        return;
+      }
+
+      const now = performance.now();
+      if (now - lastCheck < 120) return;
+      lastCheck = now;
+
+      const delta = currentY - lastY;
+      if (delta > 8) {
         setHidden(true);
       } else if (delta < -8) {
         setHidden(false);

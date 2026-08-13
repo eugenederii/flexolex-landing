@@ -34,25 +34,25 @@ export const assets = {
 
   /* ---------- Lifestyle editorial ---------------------------------------- */
   lifestyleCouple: {
-    src: null, // "/assets/lifestyle/couple-walk.jpg"
+    src: "/assets/lifestyle/couple-walk.png",
     alt: "Couple in their fifties walking together outdoors",
     brief: "Filipino couple, 50–60, walking side by side. Relaxed pace, everyday clothing.",
-    width: 1000,
-    height: 1250,
+    width: 1080,
+    height: 1350,
   },
   lifestyleFamily: {
-    src: null, // "/assets/lifestyle/family-afternoon.jpg"
-    alt: "Grandmother spending the afternoon with her grandchildren",
+    src: "/assets/lifestyle/family-afternoon.png",
+    alt: "Woman enjoying a quiet morning with coffee at home",
     brief: "Multi-generation Filipino family at home or in a yard. Ordinary weekend moment.",
-    width: 900,
-    height: 700,
+    width: 1080,
+    height: 1080,
   },
   lifestyleStairs: {
-    src: null, // "/assets/lifestyle/stairs-home.jpg"
+    src: "/assets/lifestyle/stairs-home.png",
     alt: "Woman walking down the stairs at home",
     brief: "Filipina, 55–65, on home stairs, hand on the rail. Soft interior light.",
-    width: 700,
-    height: 900,
+    width: 1080,
+    height: 1350,
   },
 } as const satisfies Record<string, AssetSlot>;
 
