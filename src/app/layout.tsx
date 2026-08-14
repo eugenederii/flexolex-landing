@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { bodyFont, displayFont } from "@/lib/fonts";
 import { brand } from "@/data/site";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import { MetaPixel } from "@/components/tracking/MetaPixel";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -49,6 +50,7 @@ export default function RootLayout({
           node instead of logging a false-positive hydration error for every
           visitor who has such an extension installed. */}
       <body className="antialiased" suppressHydrationWarning>
+        <MetaPixel />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-full focus:bg-navy focus:px-6 focus:py-3 focus:font-semibold focus:text-cream"

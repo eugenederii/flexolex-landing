@@ -84,7 +84,7 @@ export function LifestyleSection() {
                 <ImagePlaceholder
                   asset={assets.lifestyleFamily}
                   label={copy.imageLabels.family}
-                  aspect="aspect-square"
+                  aspect="aspect-[24/25]"
                   variant={3}
                   rounded="rounded-[1.5rem]"
                   sizes="(max-width: 1024px) 45vw, 24vw"

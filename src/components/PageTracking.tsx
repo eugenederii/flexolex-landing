@@ -2,19 +2,20 @@
 
 import { useEffect } from "react";
 import { captureParams } from "@/lib/urlParams";
-import { trackPageView } from "@/lib/tracking";
 
 /**
- * Runs once per page load: snapshots the attribution parameters from the URL
- * into sessionStorage, then records a PageView.
+ * Runs once per page load: snapshots the attribution parameters from the
+ * URL (including fbclid/campaign_id/adset_id/ad_id/UTMs) into sessionStorage
+ * so they're still available whenever the visitor eventually submits.
  *
- * Nothing leaves the browser — no pixel is installed and `trackPageView` only
- * queues locally today. See lib/tracking.ts.
+ * PageView itself is NOT fired from here — see
+ * components/tracking/MetaPixel.tsx, which fires it atomically alongside
+ * Pixel init to avoid a load-order race between "the Pixel script has run"
+ * and a separate call to fbq from this component.
  */
 export function PageTracking() {
   useEffect(() => {
     captureParams();
-    trackPageView();
   }, []);
 
   return null;

@@ -41,9 +41,9 @@ export const assets = {
     height: 1350,
   },
   lifestyleFamily: {
-    src: "/assets/lifestyle/family-afternoon.png",
-    alt: "Woman enjoying a quiet morning with coffee at home",
-    brief: "Multi-generation Filipino family at home or in a yard. Ordinary weekend moment.",
+    src: "/assets/lifestyle/morning-stretch.png",
+    alt: "Woman stretching her arm on a sunny balcony at home",
+    brief: "Filipina, 55–65, light arm stretch at home. Bright, plant-filled balcony backdrop.",
     width: 1080,
     height: 1080,
   },

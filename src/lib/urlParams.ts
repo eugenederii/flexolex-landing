@@ -3,6 +3,7 @@ import {
   type TrackedParamKey,
   type TrackedParams,
 } from "@/types";
+import { recordFbclidCaptureTime } from "./metaAttribution";
 
 /**
  * URL PARAMETER CAPTURE
@@ -78,7 +79,12 @@ function writeStoredParams(params: TrackedParams): void {
 export function captureParams(): TrackedParams {
   if (!isBrowser()) return {};
 
-  const merged: TrackedParams = { ...readStoredParams(), ...readParamsFromUrl() };
+  const fromUrl = readParamsFromUrl();
+  // Records when THIS visit's ad click landed — see metaAttribution.ts's
+  // _fbc fallback construction, which needs that timestamp later.
+  if (fromUrl.fbclid) recordFbclidCaptureTime();
+
+  const merged: TrackedParams = { ...readStoredParams(), ...fromUrl };
   writeStoredParams(merged);
   return merged;
 }

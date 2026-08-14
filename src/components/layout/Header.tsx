@@ -79,7 +79,14 @@ export function Header() {
 
   const goTo = (href: string) => {
     setMenuOpen(false);
-    scrollToId(href.replace("#", ""));
+    // Desktop only: the header hides itself on any downward scroll (see
+    // above), so the usual header-height clearance is dead space by the
+    // time the scroll lands — just enough of the previous (often
+    // differently-coloured) section peeks through at the top to look like
+    // a mistake. A small fixed offset instead of the header's height fixes
+    // that without touching mobile, where this hasn't been reported.
+    const desktopOffset = window.innerWidth >= 1024 ? 16 : undefined;
+    scrollToId(href.replace("#", ""), false, desktopOffset);
   };
 
   return (

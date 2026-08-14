@@ -53,6 +53,11 @@ export const TRACKED_PARAM_KEYS = [
   "utm_campaign",
   "utm_content",
   "utm_term",
+  /** Meta ad-click id — distinct from EZAFF's own `click_id`. See lib/metaAttribution.ts. */
+  "fbclid",
+  "campaign_id",
+  "adset_id",
+  "ad_id",
 ] as const;
 
 export type TrackedParamKey = (typeof TRACKED_PARAM_KEYS)[number];
@@ -66,6 +71,46 @@ export interface TrackingEventPayload {
   contentCategory?: string;
   value?: number;
   currency?: string;
-  /** Only ever set by the order flow, after a confirmed backend response. */
-  leadId?: string;
 }
+
+/* ---------- Lead API (browser → /api/lead → EZAFF) -------------------------
+   The browser only ever talks to our own /api/lead route (see
+   lib/leadForm.ts and app/api/lead/route.ts). Offer configuration
+   (publisher_id, offer_id, api_key, country, price, quantity,
+   price_currency) is never part of this contract — it's fixed server-side
+   from environment variables and cannot be influenced by the request body. */
+
+/** Body the client sends to our own /api/lead route. */
+export interface LeadApiRequestBody {
+  fullName: string;
+  phone: string;
+  /** Attribution parameters captured from the URL/session — see lib/urlParams.ts. */
+  params: TrackedParams;
+  /** Meta `_fbp`/`_fbc` cookies, read fresh immediately before submission — see lib/leadForm.ts. */
+  fbp?: string;
+  fbc?: string;
+  /** Cloudflare Turnstile response token — see lib/turnstile.ts. Absent/ignored when Turnstile isn't configured. */
+  turnstileToken?: string;
+  /** The actual landing page URL as seen by the browser (window.location.href). */
+  eventSourceUrl?: string;
+}
+
+export interface LeadApiSuccessBody {
+  success: true;
+  /** The order id EZAFF returned for this lead. */
+  orderId: string;
+  /** Generated server-side, sent to EZAFF as publisher_order_id — kept for
+   *  matching this lead against a future postback. */
+  publisherOrderId: string;
+  /** Generated server-side alongside publisherOrderId. The browser fires the
+   *  Meta Lead event with this exact value as its eventID, for future
+   *  Pixel + CAPI deduplication. */
+  metaLeadEventId: string;
+}
+
+export interface LeadApiErrorBody {
+  success: false;
+  message: string;
+}
+
+export type LeadApiResponseBody = LeadApiSuccessBody | LeadApiErrorBody;

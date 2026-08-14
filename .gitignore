@@ -30,8 +30,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files — .env.local holds real secrets (EZAFF_API_KEY etc.) and must
+# never be committed; .env.example is the opt-in exception so contributors
+# know which variables to set.
 .env*
+!.env.example
 
 # vercel
 .vercel

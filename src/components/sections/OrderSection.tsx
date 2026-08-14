@@ -2,12 +2,14 @@
 
 import { useId, useRef, useState, type FormEvent } from "react";
 import { CheckCircle2, Phone, ShieldCheck, User } from "lucide-react";
+import { pricing } from "@/data/site";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
 import {
   formatPhoneInput,
   submitLead,
   validateLeadForm,
 } from "@/lib/leadForm";
+import { trackLead } from "@/lib/tracking";
 import type { LeadFormErrorCodes, LeadFormErrors, LeadFormValues, LeadSubmitStatus } from "@/types";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { Dictionary } from "@/data/locales";
@@ -15,6 +17,7 @@ import { Section } from "@/components/ui/Section";
 import { FormInput } from "@/components/ui/FormInput";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import { TurnstileWidget, isTurnstileConfiguredClient } from "@/components/TurnstileWidget";
 
 const emptyValues: LeadFormValues = { fullName: "", phone: "" };
 
@@ -35,6 +38,7 @@ export function OrderSection() {
   const [errors, setErrors] = useState<LeadFormErrors>({});
   const [status, setStatus] = useState<LeadSubmitStatus>("idle");
   const [submitted, setSubmitted] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const successRef = useRef<HTMLParagraphElement>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
 
@@ -51,6 +55,12 @@ export function OrderSection() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    // A request is already in flight — the submit button is disabled for
+    // exactly this case, but this guards against a stray Enter-key resubmit
+    // slipping through before the disabled state re-renders.
+    if (status === "submitting") return;
+
     setSubmitted(true);
 
     // Bot trap: real people never fill a field they cannot see.
@@ -66,8 +76,17 @@ export function OrderSection() {
       return;
     }
 
+    // Turnstile is configured but hasn't produced a token yet — for most
+    // real visitors this resolves in under a second, but a very fast
+    // submit or a slow connection can beat it. The server enforces this
+    // regardless; this just avoids a submission we already know will fail.
+    if (isTurnstileConfiguredClient() && !turnstileToken) {
+      setStatus("error");
+      return;
+    }
+
     setStatus("submitting");
-    const result = await submitLead(values);
+    const result = await submitLead(values, turnstileToken ?? undefined);
 
     if (!result.ok) {
       setStatus("error");
@@ -77,16 +96,10 @@ export function OrderSection() {
     setStatus("success");
     window.setTimeout(() => successRef.current?.focus(), 60);
 
-    /*
-     * TODO: Affiliate API integration.
-     * `submitLead` currently resolves locally (see lib/leadForm.ts) — nothing
-     * is sent anywhere yet. Once the real API call is in place, and ONLY here,
-     * inside this confirmed-success branch, fire the conversion:
-     *
-     *   trackLead(result.leadId!, pricing.current);
-     *
-     * Never on click, never on validation passing, never optimistically.
-     */
+    // CONVERSION — only reachable after EZAFF has confirmed the lead and
+    // returned an order id (see submitLead / app/api/lead/route.ts). Never
+    // called on click, on validation passing, or optimistically.
+    trackLead(result.metaLeadEventId!, result.leadId!, pricing.current);
   };
 
   const succeeded = status === "success";
@@ -184,6 +197,8 @@ export function OrderSection() {
                     className="absolute h-0 w-0 opacity-0"
                   />
                 </div>
+
+                <TurnstileWidget onToken={setTurnstileToken} />
 
                 {status === "error" && (
                   <p

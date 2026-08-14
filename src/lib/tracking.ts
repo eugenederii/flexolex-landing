@@ -1,70 +1,46 @@
 import type { TrackingEventName, TrackingEventPayload } from "@/types";
-import { getParams } from "./urlParams";
+import { trackMetaEvent } from "./metaPixel";
 
 /* ==========================================================================
-   TRACKING — ARCHITECTURE ONLY. NOTHING IS SENT ANYWHERE YET.
+   TRACKING — the one canonical path to Meta Pixel
    --------------------------------------------------------------------------
-   No pixel is installed and no network request is made. Every call below
-   resolves to a local debug log. This module exists so that turning tracking
-   on later is a single, reviewable change instead of a scatter of edits.
-
-   TODO (later, in this order):
-     1. Load the Meta Pixel script (id comes from the `fb_pixel` URL param —
-        see lib/urlParams.ts — or from NEXT_PUBLIC_FB_PIXEL_ID).
-     2. Replace `dispatch()` below with the real `fbq('track', ...)` call.
-     3. Keep the Lead rule below intact.
+   Every real dispatch to Meta goes through trackMetaEvent() (lib/metaPixel.ts),
+   which is a safe no-op whenever the Pixel isn't configured/loaded/blocked.
+   Call sites:
+     - components/PageTracking.tsx        -> (nothing here anymore — see
+       components/tracking/MetaPixel.tsx, which fires PageView itself,
+       atomically with Pixel init, avoiding a load-order race with a
+       separate call from here)
+     - lib/scrollToOrder.ts               -> trackViewContent(), on CTA click
+     - components/sections/OrderSection.tsx -> trackLead(), ONLY after a
+       confirmed EZAFF success response (see THE LEAD RULE below)
 
    THE LEAD RULE
-     `trackLead()` must ONLY be called after the affiliate API has confirmed a
-     successful submission. Never on button click, never on validation pass,
-     never optimistically. A CTA click is `trackViewContent` at most.
+     trackLead() must ONLY be called after the affiliate API has confirmed a
+     successful submission, with the server-generated metaLeadEventId as its
+     eventID (see app/api/lead/route.ts). Never on button click, never on
+     validation pass, never optimistically. A CTA click is trackViewContent
+     at most.
    ========================================================================== */
 
 const DEBUG =
   typeof process !== "undefined" && process.env.NODE_ENV === "development";
 
-/** Flips to true once a real pixel is initialised. Guards every dispatch. */
-let trackingEnabled = false;
+/** Maps this project's internal payload shape to Meta's standard (snake_case) event params. */
+function toMetaParams(payload: TrackingEventPayload): Record<string, unknown> {
+  const params: Record<string, unknown> = {};
+  if (payload.contentName) params.content_name = payload.contentName;
+  if (payload.contentCategory) params.content_category = payload.contentCategory;
+  if (payload.currency) params.currency = payload.currency;
+  if (payload.value !== undefined) params.value = payload.value;
+  return params;
+}
 
-/** Events fired before init, kept so nothing is lost when tracking goes live. */
-const queue: Array<{
-  name: TrackingEventName;
-  payload: TrackingEventPayload;
-  at: number;
-}> = [];
-
-function dispatch(name: TrackingEventName, payload: TrackingEventPayload): void {
-  if (!trackingEnabled) {
-    queue.push({ name, payload, at: Date.now() });
-    if (DEBUG) {
-      console.debug("[tracking:queued]", name, { ...payload, params: getParams() });
-    }
-    return;
-  }
-
-  // TODO: real pixel dispatch goes here, e.g.
-  // window.fbq?.("track", name, toPixelPayload(payload));
+function dispatch(name: TrackingEventName, payload: TrackingEventPayload, eventId?: string): void {
   if (DEBUG) {
-    console.debug("[tracking:sent]", name, payload);
+    console.debug("[tracking]", name, payload, eventId ? { eventId } : undefined);
   }
-}
-
-/**
- * TODO: call this once the pixel script has actually loaded.
- * Flushes anything that queued up beforehand.
- */
-export function initTracking(): void {
-  trackingEnabled = true;
-  const pending = queue.splice(0, queue.length);
-  for (const event of pending) dispatch(event.name, event.payload);
-}
-
-/** Fired once when the landing page mounts. */
-export function trackPageView(): void {
-  dispatch("PageView", {
-    contentName: "Flexolex Landing",
-    contentCategory: "Joint Support",
-  });
+  trackMetaEvent(name, toMetaParams(payload), eventId);
 }
 
 /**
@@ -79,22 +55,30 @@ export function trackViewContent(source: string): void {
 }
 
 /**
- * CONVERSION. Call ONLY from the success branch of a confirmed affiliate API
- * response, with the id that API returned. See THE LEAD RULE above.
+ * CONVERSION. Call ONLY from the success branch of a confirmed EZAFF
+ * response, with the server-generated metaLeadEventId. See THE LEAD RULE
+ * above.
+ *
+ * `value`/`currency` here are the pre-existing behavior of this function
+ * (the order's price, passed by OrderSection.tsx) — preserved as-is, not
+ * newly introduced by the Pixel wiring.
  */
-export function trackLead(leadId: string, value?: number): void {
-  if (!leadId) {
+export function trackLead(eventId: string, leadId: string, value?: number): void {
+  if (!leadId || !eventId) {
     if (DEBUG) {
-      console.warn("[tracking] trackLead called without a confirmed lead id — ignored");
+      console.warn("[tracking] trackLead called without confirmed ids — ignored", { leadId, eventId });
     }
     return;
   }
 
-  dispatch("Lead", {
-    contentName: "Flexolex Order Request",
-    contentCategory: "Joint Support",
-    currency: "PHP",
-    value,
-    leadId,
-  });
+  dispatch(
+    "Lead",
+    {
+      contentName: "Flexolex Order Request",
+      contentCategory: "Joint Support",
+      currency: "PHP",
+      value,
+    },
+    eventId,
+  );
 }

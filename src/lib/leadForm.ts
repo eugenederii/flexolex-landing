@@ -1,5 +1,6 @@
-import type { LeadFormErrorCodes, LeadFormValues } from "@/types";
+import type { LeadApiRequestBody, LeadApiResponseBody, LeadFormErrorCodes, LeadFormValues } from "@/types";
 import { getParams } from "./urlParams";
+import { captureEventSourceUrl, readMetaBrowserIds } from "./metaAttribution";
 
 /* ==========================================================================
    LEAD FORM — validation + submission boundary
@@ -59,50 +60,60 @@ export interface LeadSubmitResult {
   ok: boolean;
   /** Present only on a confirmed success. Required before any Lead event. */
   leadId?: string;
+  /** Present only on a confirmed success — the eventID the browser's Meta Lead event must use. */
+  metaLeadEventId?: string;
   message?: string;
 }
 
 /**
  * SUBMIT BOUNDARY
  *
- * Right now this resolves locally — no request leaves the browser.
- *
- * TODO: Affiliate API integration.
- *   Replace the mock block below with the real call, e.g.
- *
- *     const response = await fetch("/api/lead", {
- *       method: "POST",
- *       headers: { "Content-Type": "application/json" },
- *       body: JSON.stringify(payload),
- *       signal,
- *     });
- *     const data = await response.json();
- *     if (!response.ok || !data.id) return { ok: false, message: data.message };
- *     return { ok: true, leadId: data.id };
- *
- *   The `payload` shape below is already what the API will need: the customer
- *   fields plus the captured attribution parameters. The caller only fires the
- *   Lead tracking event when this returns `{ ok: true, leadId }`, so no other
- *   file has to change.
+ * Posts to our own /api/lead route, which forwards the lead to EZAFF
+ * server-side (see app/api/lead/route.ts and lib/ezaff.ts) — no affiliate
+ * credentials or upstream call ever touch the browser. The caller only
+ * fires the Lead tracking event when this returns `{ ok: true, leadId,
+ * metaLeadEventId }`, where `leadId` is the order id EZAFF confirmed.
  */
 export async function submitLead(
   values: LeadFormValues,
+  turnstileToken?: string,
 ): Promise<LeadSubmitResult> {
-  const payload = {
+  const params = getParams();
+  // Read fresh, right before building the payload — not cached from mount —
+  // because the Pixel may set/update these cookies after initial render.
+  const { fbp, fbc } = readMetaBrowserIds(params.fbclid);
+
+  const payload: LeadApiRequestBody = {
     fullName: values.fullName.trim(),
     phone: normalisePhone(values.phone),
-    params: getParams(),
-    submittedAt: new Date().toISOString(),
-    landing: typeof window !== "undefined" ? window.location.pathname : "/",
+    params,
+    fbp: fbp ?? undefined,
+    fbc: fbc ?? undefined,
+    turnstileToken,
+    eventSourceUrl: captureEventSourceUrl(),
   };
 
-  // ---- MOCK SUBMISSION — remove when the API is wired up -------------------
-  if (process.env.NODE_ENV === "development") {
-    console.debug("[lead:mock-submit]", payload);
+  let response: Response;
+  try {
+    response = await fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    return { ok: false };
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 900));
+  let data: LeadApiResponseBody | undefined;
+  try {
+    data = await response.json();
+  } catch {
+    return { ok: false };
+  }
 
-  return { ok: true, leadId: `mock-${Date.now()}` };
-  // -------------------------------------------------------------------------
+  if (!response.ok || !data || !data.success) {
+    return { ok: false, message: data && !data.success ? data.message : undefined };
+  }
+
+  return { ok: true, leadId: data.orderId, metaLeadEventId: data.metaLeadEventId };
 }
