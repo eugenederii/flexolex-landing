@@ -18,7 +18,18 @@ export function OfferSection() {
     <Section id="offer" tone="cream">
       <div className="container-page">
         <Reveal>
-          <div className="grain on-dark relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-navy via-navy to-navy-deep px-6 py-12 sm:px-10 sm:py-14 lg:rounded-[2.25rem] lg:px-16 lg:py-16">
+          <div className="grain on-dark relative overflow-hidden rounded-[1.75rem] px-6 py-12 sm:px-10 sm:py-14 lg:rounded-[2.25rem] lg:px-16 lg:py-16">
+            {/* Background photo */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[url('/assets/background/joint-xray-offer.png')] bg-cover bg-center"
+            />
+            {/* Dark wash over the photo so the light/cream text on top stays readable */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-br from-navy/95 via-navy/90 to-navy-deep/95"
+            />
+
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -top-28 -right-20 size-[26rem] rounded-full bg-[radial-gradient(circle,rgba(230,195,106,0.18)_0%,transparent_65%)]"
