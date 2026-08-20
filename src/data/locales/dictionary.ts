@@ -102,7 +102,7 @@ export interface Dictionary {
     phoneLabel: string;
     phonePlaceholder: string;
     submitting: string;
-    /** Centered reassurance line directly below the submit button. */
+    /** Centered reassurance line directly below the phone number field. */
     reassurance: string;
     /** Smaller, subtler trust line below the reassurance line, with a shield-check icon. */
     privacy: string;
