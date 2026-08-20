@@ -118,9 +118,9 @@ export const fil: Dictionary = {
     namePlaceholder: "Juan Dela Cruz",
     phoneLabel: "Numero ng telepono",
     phonePlaceholder: "9XX XXX XXXX",
-    phoneHint: "Tatawagan namin ang numerong ito para kumpirmahin ang iyong order.",
     submitting: "Ipinapadala…",
-    privacy: "Gagamitin lang ang iyong detalye para makontak ka tungkol sa order na ito.",
+    reassurance:
+      "Makikipag-ugnayan sa iyo ang aming specialist sa lalong madaling panahon para kumpirmahin ang iyong order.",
     failure: "May problemang naganap. Pakisuri ang iyong detalye at subukan ulit.",
     successTitle: "Salamat!",
     successBody: "Natanggap na ang iyong request.",

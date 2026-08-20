@@ -24,11 +24,6 @@ export function OfferSection() {
               aria-hidden="true"
               className="absolute inset-0 bg-[url('/assets/background/joint-xray-offer.png')] bg-cover bg-center"
             />
-            {/* Dark wash over the photo so the light/cream text on top stays readable */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-br from-navy/95 via-navy/90 to-navy-deep/95"
-            />
 
             <div
               aria-hidden="true"
@@ -54,26 +49,26 @@ export function OfferSection() {
 
               {/* Offer copy */}
               <div>
-                <p className="eyebrow text-gold-soft">
-                  <span aria-hidden="true" className="h-px w-6 bg-gold-soft/60" />
+                <p className="eyebrow text-navy">
+                  <span aria-hidden="true" className="h-px w-6 bg-navy/60" />
                   {copy.eyebrow}
                 </p>
 
-                <h2 className="mt-4 text-3xl text-cream sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
+                <h2 className="mt-4 text-3xl text-ink sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
                   {copy.title}
                 </h2>
 
-                <p className="mt-5 max-w-lg text-lg text-sky-soft/80">{copy.paragraph}</p>
+                <p className="mt-5 max-w-lg text-lg text-ink-soft">{copy.paragraph}</p>
 
-                <div className="mt-8 rounded-2xl bg-white/6 p-6 ring-1 ring-white/10">
-                  <PriceDisplay size="lg" tone="dark-bg" />
+                <div className="mt-8 rounded-2xl bg-white/60 p-6 ring-1 ring-navy/10">
+                  <PriceDisplay size="lg" tone="light-bg" />
 
-                  <ul className="mt-6 space-y-3.5 border-t border-white/10 pt-6">
+                  <ul className="mt-6 space-y-3.5 border-t border-navy/10 pt-6">
                     {copy.points.map((point) => (
-                      <li key={point} className="flex items-start gap-3 text-base text-sky-soft">
+                      <li key={point} className="flex items-start gap-3 text-base text-ink-soft">
                         <Check
                           aria-hidden="true"
-                          className="mt-1 size-4.5 shrink-0 text-gold-soft"
+                          className="mt-1 size-4.5 shrink-0 text-navy"
                           strokeWidth={2.6}
                         />
                         {point}

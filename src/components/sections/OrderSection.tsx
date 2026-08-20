@@ -178,7 +178,6 @@ export function OrderSection() {
                     label={copy.phoneLabel}
                     placeholder={copy.phonePlaceholder}
                     autoComplete="tel"
-                    hint={copy.phoneHint}
                     value={values.phone}
                     onChange={(event) => setField("phone")(event.target.value)}
                     error={errors.phone}
@@ -197,6 +196,15 @@ export function OrderSection() {
                     className="absolute h-0 w-0 opacity-0"
                   />
                 </div>
+
+                <p className="mt-3 flex items-start justify-center gap-2.5 text-center text-sm font-medium text-ink-soft">
+                  <ShieldCheck
+                    aria-hidden="true"
+                    className="mt-0.5 size-4.5 shrink-0 text-navy"
+                    strokeWidth={2}
+                  />
+                  {copy.reassurance}
+                </p>
 
                 <TurnstileWidget onToken={setTurnstileToken} />
 
@@ -218,15 +226,6 @@ export function OrderSection() {
                 >
                   {status === "submitting" ? copy.submitting : t.common.orderNow}
                 </Button>
-
-                <p className="mt-5 flex items-start gap-2.5 text-sm text-ink-muted">
-                  <ShieldCheck
-                    aria-hidden="true"
-                    className="mt-0.5 size-4.5 shrink-0 text-navy"
-                    strokeWidth={2}
-                  />
-                  {copy.privacy}
-                </p>
               </form>
             )}
           </div>

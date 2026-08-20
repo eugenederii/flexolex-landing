@@ -101,9 +101,9 @@ export interface Dictionary {
     namePlaceholder: string;
     phoneLabel: string;
     phonePlaceholder: string;
-    phoneHint: string;
     submitting: string;
-    privacy: string;
+    /** Reassurance line below the phone field, with a shield-check icon. */
+    reassurance: string;
     failure: string;
     successTitle: string;
     successBody: string;
