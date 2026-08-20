@@ -4,7 +4,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { scrollToId, scrollToOrder, ORDER_SECTION_ID } from "@/lib/scrollToOrder";
 
-type Variant = "primary" | "gold" | "outline" | "light" | "quiet";
+type Variant = "primary" | "gold" | "outline" | "light" | "quiet" | "offer";
 type Size = "sm" | "md" | "lg";
 
 interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
@@ -37,6 +37,9 @@ const variants: Record<Variant, string> = {
   light:
     "bg-cream text-navy-deep shadow-[0_14px_30px_-16px_rgba(0,0,0,0.6)] hover:bg-white",
   quiet: "text-navy hover:bg-sky-mist",
+  /** Branded solid-blue CTA — currently only the special-offer section's button. */
+  offer:
+    "bg-[#123F87] text-white shadow-[0_14px_30px_-16px_rgba(0,0,0,0.6)] hover:bg-[#174EA6]",
 };
 
 /* Min 44px tall at every size — comfortable tap targets for a 40–65+ audience. */

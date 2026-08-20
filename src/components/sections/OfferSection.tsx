@@ -80,12 +80,12 @@ export function OfferSection() {
                 <Button
                   scrollTo={ORDER_SECTION_ID}
                   trackingSource="Offer section"
-                  variant="light"
+                  variant="offer"
                   size="lg"
                   className="mt-8 w-full sm:w-auto"
                 >
                   {t.common.claimOff}
-                  <ArrowRight aria-hidden="true" className="size-5" strokeWidth={2.4} />
+                  <ArrowRight aria-hidden="true" className="size-5 text-gold-soft" strokeWidth={2.4} />
                 </Button>
               </div>
             </div>
