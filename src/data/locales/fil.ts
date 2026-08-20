@@ -20,6 +20,9 @@ export const fil: Dictionary = {
     closeMenu: "Isara ang menu",
     backToTop: "bumalik sa itaas",
     chooseLanguage: "Pumili ng wika",
+    navLabelMain: "Pangunahing Menu",
+    navLabelMobile: "Mobile Menu",
+    skipToContent: "Lumaktaw sa nilalaman",
   },
 
   hero: {
@@ -32,6 +35,7 @@ export const fil: Dictionary = {
   },
 
   trustStrip: {
+    sectionLabel: "Ano ang Flexolex",
     items: [
       {
         id: "daily-support",

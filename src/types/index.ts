@@ -3,8 +3,10 @@
    ========================================================================== */
 
 /* ---------- Localization ---------------------------------------------------
-   "en" (English, default) and "fil" (Filipino — the language, not "PH" the
-   country code). See src/data/locales for the dictionaries and
+   "en" (English) and "fil" (Filipino — the language, not "PH" the country
+   code; rendered as `lang="tl"` on <html>, the correct BCP-47 tag). Filipino
+   is the DEFAULT for new visitors — see DEFAULT_LOCALE in src/data/locales.
+   See src/data/locales for the dictionaries and
    src/components/LanguageProvider.tsx for the runtime switch. */
 export type Locale = "en" | "fil";
 

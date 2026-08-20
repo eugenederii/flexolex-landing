@@ -14,6 +14,9 @@ export const en: Dictionary = {
     closeMenu: "Close menu",
     backToTop: "back to top",
     chooseLanguage: "Choose language",
+    navLabelMain: "Main",
+    navLabelMobile: "Mobile",
+    skipToContent: "Skip to content",
   },
 
   hero: {
@@ -26,6 +29,7 @@ export const en: Dictionary = {
   },
 
   trustStrip: {
+    sectionLabel: "What Flexolex is",
     items: [
       {
         id: "daily-support",

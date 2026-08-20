@@ -25,6 +25,12 @@ export interface Dictionary {
     /** Appended after the brand name in the logo's aria-label. */
     backToTop: string;
     chooseLanguage: string;
+    /** aria-label on the desktop <nav> landmark. */
+    navLabelMain: string;
+    /** aria-label on the mobile menu <nav> landmark. */
+    navLabelMobile: string;
+    /** The keyboard-only "Skip to content" link at the very top of the page. */
+    skipToContent: string;
   };
 
   hero: {
@@ -37,6 +43,8 @@ export interface Dictionary {
   };
 
   trustStrip: {
+    /** aria-label on the section landmark. */
+    sectionLabel: string;
     items: {
       id: string;
       icon: "leaf" | "sun" | "footprints";

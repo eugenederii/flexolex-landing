@@ -13,7 +13,7 @@ export function TrustStrip() {
   const { t } = useLanguage();
 
   return (
-    <section aria-label="What Flexolex is" className="relative z-10 bg-cream pb-4">
+    <section aria-label={t.trustStrip.sectionLabel} className="relative z-10 bg-cream pb-4">
       <div className="container-page">
         <Reveal>
           <ul className="grid gap-7 rounded-2xl border border-line bg-surface p-7 shadow-card sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-line sm:p-0">

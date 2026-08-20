@@ -7,8 +7,10 @@ export type { Dictionary } from "./dictionary";
 
 export const dictionaries: Record<Locale, Dictionary> = { en, fil };
 
-/** New visitors always get English — never inferred from browser/location. */
-export const DEFAULT_LOCALE: Locale = "en";
+/** New visitors always get Filipino — never inferred from browser/location.
+ *  English is available only via an explicit manual choice in the language
+ *  switcher, which is then remembered in localStorage (see LanguageProvider). */
+export const DEFAULT_LOCALE: Locale = "fil";
 
 export const LOCALE_STORAGE_KEY = "flexolex-language";
 
@@ -17,6 +19,6 @@ export const LOCALE_STORAGE_KEY = "flexolex-language";
  *  Flag marks the language, not the country the visitor is in: US flag for
  *  English, PH flag for Filipino. */
 export const LANGUAGE_OPTIONS: { code: Locale; label: string; flag: string }[] = [
-  { code: "en", label: "English", flag: "🇺🇸" },
   { code: "fil", label: "Filipino", flag: "🇵🇭" },
+  { code: "en", label: "English", flag: "🇺🇸" },
 ];

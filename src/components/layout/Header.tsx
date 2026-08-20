@@ -112,7 +112,7 @@ export function Header() {
           <Wordmark />
         </a>
 
-        <nav aria-label="Main" className="hidden lg:block">
+        <nav aria-label={t.header.navLabelMain} className="hidden lg:block">
           <ul className="flex items-center gap-1">
             <li>
               <a
@@ -168,7 +168,7 @@ export function Header() {
           menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
         )}
       >
-        <nav aria-label="Mobile" className="container-page py-3">
+        <nav aria-label={t.header.navLabelMobile} className="container-page py-3">
           <ul className="flex flex-col">
             <li className="border-b border-line/70 last:border-0">
               <a

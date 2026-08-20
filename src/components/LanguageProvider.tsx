@@ -24,15 +24,20 @@ function isLocale(value: string | null): value is Locale {
   return value === "en" || value === "fil";
 }
 
+/** `<html lang>` wants a real BCP-47 tag — "tl" (Tagalog) for our "fil"
+ *  internal code, not the ISO-639-2-only "fil" itself. */
+const HTML_LANG: Record<Locale, string> = { en: "en", fil: "tl" };
+
 /* ==========================================================================
    Tiny external store over localStorage — read via useSyncExternalStore so
    the saved preference is picked up without a setState-in-effect (React
    flags that pattern; this is the store-subscription shape it recommends
-   instead). getServerSnapshot always returns English: every visitor's first
-   paint — server and client — renders the same thing, so there is nothing
-   to mismatch. A returning Filipino-preferring visitor may see one brief
-   English flash while the real snapshot is read, which is the standard,
-   safe trade-off for a localStorage-based (not cookie/SSR-based) switch.
+   instead). getServerSnapshot always returns DEFAULT_LOCALE (Filipino):
+   every visitor's first paint — server and client — renders the same thing,
+   so there is nothing to mismatch. A returning English-preferring visitor
+   may see one brief Filipino flash while the real snapshot is read, which
+   is the standard, safe trade-off for a localStorage-based (not
+   cookie/SSR-based) switch.
    ========================================================================== */
 type Listener = () => void;
 let listeners: Listener[] = [];
@@ -62,7 +67,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const locale = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
-    document.documentElement.lang = locale;
+    document.documentElement.lang = HTML_LANG[locale];
   }, [locale]);
 
   const setLocale = useCallback((next: Locale) => persistLocale(next), []);

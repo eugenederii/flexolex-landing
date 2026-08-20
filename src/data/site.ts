@@ -7,9 +7,6 @@
 
 export const brand = {
   name: "FLEXOLEX",
-  /** Category line — the visitor must know what this is within one second. */
-  category: "Daily Joint Support",
-  tagline: "Daily support for comfortable movement.",
 } as const;
 
 export const pricing = {
