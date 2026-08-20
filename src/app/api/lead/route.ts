@@ -118,10 +118,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<LeadApiRe
   }
 
   const fullName = typeof body.fullName === "string" ? sanitizeName(body.fullName) : "";
+  // normalisePhone() always returns either "" or exactly 11 digits
+  // ("0" + the 10-digit PH subscriber number) — see lib/leadForm.ts.
   const phone = normalisePhone(typeof body.phone === "string" ? body.phone : "");
   const digits = phone.replace(/\D/g, "");
 
-  if (fullName.length < 2 || fullName.length > MAX_NAME_LENGTH || digits.length < 10 || digits.length > 13) {
+  if (fullName.length < 2 || fullName.length > MAX_NAME_LENGTH || digits.length !== 11) {
     return NextResponse.json({ success: false, message: GENERIC_FAILURE_MESSAGE }, { status: 400 });
   }
 

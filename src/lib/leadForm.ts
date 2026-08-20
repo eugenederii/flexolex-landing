@@ -6,21 +6,37 @@ import { captureEventSourceUrl, readMetaBrowserIds } from "./metaAttribution";
    LEAD FORM — validation + submission boundary
    ========================================================================== */
 
-/** Everything except digits and a single leading “+”. */
+/**
+ * Canonicalizes to the PH local "0XXXXXXXXXX" format (11 digits, leading
+ * 0) — the exact shape EZAFF is confirmed to accept. The order form's field
+ * now shows a fixed "+63" prefix and only collects the 10-digit subscriber
+ * number, but this stays defensive about the shape it's actually given
+ * (server-side, `body.phone` is untrusted input, not guaranteed to have
+ * come through formatPhoneInput below) — it also gracefully handles an
+ * already-local "0XXXXXXXXXX" number or a pasted "+63XXXXXXXXXX" one.
+ * Returns "" for empty/unparseable input.
+ */
 export function normalisePhone(raw: string): string {
-  const trimmed = raw.trim();
-  const plus = trimmed.startsWith("+") ? "+" : "";
-  return plus + trimmed.replace(/[^\d]/g, "");
+  let digits = raw.replace(/\D/g, "");
+  if (digits.length > 10 && digits.startsWith("63")) digits = digits.slice(2);
+  digits = digits.replace(/^0+/, "").slice(0, 10);
+  return digits ? `0${digits}` : "";
 }
 
-/** Formats keystrokes as `0912 345 6789` while leaving other formats alone. */
+/**
+ * Formats live keystrokes as the visitor types their 10-digit PH mobile
+ * subscriber number, e.g. `917 123 4567` — the fixed "+63" shown next to
+ * the field (see OrderSection.tsx) already covers the country code, so
+ * this never includes it or a leading 0. Tolerates a pasted full number
+ * (with "+63"/"63" or a leading 0) by trimming it down to just the
+ * subscriber number.
+ */
 export function formatPhoneInput(raw: string): string {
-  const hasPlus = raw.trim().startsWith("+");
-  const digits = raw.replace(/[^\d]/g, "").slice(0, hasPlus ? 13 : 11);
+  let digits = raw.replace(/\D/g, "");
+  if (digits.length > 10 && digits.startsWith("63")) digits = digits.slice(2);
+  digits = digits.replace(/^0+/, "").slice(0, 10);
 
-  if (hasPlus) return `+${digits}`;
-
-  const parts = [digits.slice(0, 4), digits.slice(4, 7), digits.slice(7, 11)];
+  const parts = [digits.slice(0, 3), digits.slice(3, 6), digits.slice(6, 10)];
   return parts.filter(Boolean).join(" ");
 }
 
@@ -31,10 +47,9 @@ export function formatPhoneInput(raw: string): string {
  * doesn't know which language is active. The caller (OrderSection) maps
  * each code to a translated message via the active dictionary.
  *
- * TODO: tighten to full Philippine mobile validation once the affiliate API's
- * accepted formats are confirmed. The shapes we expect are `09XXXXXXXXX`,
- * `+639XXXXXXXXX` and `639XXXXXXXXX` — the check below already accepts those
- * while staying forgiving enough not to reject a real customer.
+ * normalisePhone() always returns either "" or exactly 11 digits
+ * ("0" + the 10-digit subscriber number) — so `!== 11` is the correct,
+ * exact check now, not a tolerant range.
  */
 export function validateLeadForm(values: LeadFormValues): LeadFormErrorCodes {
   const errors: LeadFormErrorCodes = {};
@@ -44,12 +59,11 @@ export function validateLeadForm(values: LeadFormValues): LeadFormErrorCodes {
     errors.fullName = "required";
   }
 
-  const phone = normalisePhone(values.phone);
-  const digits = phone.replace(/\D/g, "");
+  const digits = normalisePhone(values.phone).replace(/\D/g, "");
 
-  if (digits.length === 0) {
+  if (!values.phone.trim()) {
     errors.phone = "required";
-  } else if (digits.length < 10 || digits.length > 13) {
+  } else if (digits.length !== 11) {
     errors.phone = "invalid";
   }
 

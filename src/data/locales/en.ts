@@ -111,7 +111,7 @@ export const en: Dictionary = {
     nameLabel: "Full name",
     namePlaceholder: "Juan Dela Cruz",
     phoneLabel: "Phone number",
-    phonePlaceholder: "09XX XXX XXXX",
+    phonePlaceholder: "9XX XXX XXXX",
     phoneHint: "We will call this number to confirm your order.",
     submitting: "Sending…",
     privacy: "Your details are used only to contact you about this order.",
@@ -122,7 +122,7 @@ export const en: Dictionary = {
     successFooter: "Please keep your phone nearby so you do not miss the call.",
     errorNameRequired: "Please enter your full name.",
     errorPhoneRequired: "Please enter your phone number.",
-    errorPhoneInvalid: "Please enter a valid phone number, e.g. 0912 345 6789.",
+    errorPhoneInvalid: "Please enter a valid phone number, e.g. +63 912 345 6789.",
   },
 
   footer: {

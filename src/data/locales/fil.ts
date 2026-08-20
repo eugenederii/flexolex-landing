@@ -117,7 +117,7 @@ export const fil: Dictionary = {
     nameLabel: "Buong pangalan",
     namePlaceholder: "Juan Dela Cruz",
     phoneLabel: "Numero ng telepono",
-    phonePlaceholder: "09XX XXX XXXX",
+    phonePlaceholder: "9XX XXX XXXX",
     phoneHint: "Tatawagan namin ang numerong ito para kumpirmahin ang iyong order.",
     submitting: "Ipinapadala…",
     privacy: "Gagamitin lang ang iyong detalye para makontak ka tungkol sa order na ito.",
@@ -128,7 +128,7 @@ export const fil: Dictionary = {
     successFooter: "Panatilihing malapit ang iyong telepono para hindi mo mamiss ang tawag.",
     errorNameRequired: "Pakilagay ang iyong buong pangalan.",
     errorPhoneRequired: "Pakilagay ang iyong numero ng telepono.",
-    errorPhoneInvalid: "Pakilagay ang tamang numero ng telepono, hal. 0912 345 6789.",
+    errorPhoneInvalid: "Pakilagay ang tamang numero ng telepono, hal. +63 912 345 6789.",
   },
 
   footer: {

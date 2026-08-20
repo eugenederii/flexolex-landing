@@ -9,8 +9,10 @@ interface FormInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "id
   label: string;
   hint?: string;
   error?: string;
-  /** Leading glyph inside the field. Decorative only. */
+  /** Leading glyph inside the field. Decorative only. Mutually exclusive with `prefix`. */
   icon?: ReactNode;
+  /** Fixed, non-editable text at the start of the field — e.g. a country code like "+63". */
+  prefix?: string;
 }
 
 export function FormInput({
@@ -19,6 +21,7 @@ export function FormInput({
   hint,
   error,
   icon,
+  prefix,
   className,
   ...rest
 }: FormInputProps) {
@@ -45,6 +48,16 @@ export function FormInput({
           </span>
         )}
 
+        {prefix && (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 left-4 flex -translate-y-1/2 items-center gap-2.5"
+          >
+            <span className="font-sans text-base font-semibold text-ink">{prefix}</span>
+            <span className="h-5 w-px bg-line-strong" />
+          </span>
+        )}
+
         <input
           id={id}
           aria-invalid={error ? true : undefined}
@@ -55,7 +68,7 @@ export function FormInput({
             "placeholder:text-ink-muted/70",
             "transition-[border-color,box-shadow] duration-200 outline-none",
             "focus:border-navy focus:ring-4 focus:ring-navy/12",
-            icon ? "pr-4 pl-12" : "px-4",
+            prefix ? "pr-4 pl-[4.75rem]" : icon ? "pr-4 pl-12" : "px-4",
             error
               ? "border-danger focus:border-danger focus:ring-danger/12"
               : "border-line-strong hover:border-sky",

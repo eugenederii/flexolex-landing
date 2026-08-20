@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState, type FormEvent } from "react";
-import { CheckCircle2, Phone, ShieldCheck, User } from "lucide-react";
+import { CheckCircle2, ShieldCheck, User } from "lucide-react";
 import { pricing } from "@/data/site";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
 import {
@@ -182,7 +182,7 @@ export function OrderSection() {
                     value={values.phone}
                     onChange={(event) => setField("phone")(event.target.value)}
                     error={errors.phone}
-                    icon={<Phone className="size-5" strokeWidth={1.9} />}
+                    prefix="+63"
                     required
                   />
 
