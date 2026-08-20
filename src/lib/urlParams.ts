@@ -94,6 +94,31 @@ export function getParams(): TrackedParams {
   return { ...readStoredParams(), ...readParamsFromUrl() };
 }
 
+/**
+ * Removes only `click_id` from the visible browser URL via
+ * `history.replaceState` — no reload, no navigation, every other query
+ * param (fbclid, utm_*, etc.) is left exactly as it was. No-op if
+ * `click_id` isn't present.
+ *
+ * Call this AFTER captureParams() has already saved it to sessionStorage —
+ * getParams() falls back to that stored copy once it's gone from the URL,
+ * so nothing is lost, and it's still sent to EZAFF on submit.
+ */
+export function stripClickIdFromUrl(): void {
+  if (!isBrowser()) return;
+
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has("click_id")) return;
+
+  url.searchParams.delete("click_id");
+  const query = url.searchParams.toString();
+  const next = `${url.pathname}${query ? `?${query}` : ""}${url.hash}`;
+
+  // Passes through the existing history state rather than clobbering it —
+  // Next.js's own client-side router keeps data there.
+  window.history.replaceState(window.history.state, "", next);
+}
+
 /** Appends the stored parameters to a URL — for future outbound links. */
 export function withParams(url: string, params: TrackedParams = getParams()): string {
   const entries = Object.entries(params).filter(([, v]) => Boolean(v));
