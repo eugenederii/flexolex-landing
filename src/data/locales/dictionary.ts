@@ -102,8 +102,10 @@ export interface Dictionary {
     phoneLabel: string;
     phonePlaceholder: string;
     submitting: string;
-    /** Reassurance line below the phone field, with a shield-check icon. */
+    /** Centered reassurance line directly below the submit button. */
     reassurance: string;
+    /** Smaller, subtler trust line below the reassurance line, with a shield-check icon. */
+    privacy: string;
     failure: string;
     successTitle: string;
     successBody: string;

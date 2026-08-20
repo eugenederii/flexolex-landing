@@ -119,8 +119,8 @@ export const fil: Dictionary = {
     phoneLabel: "Numero ng telepono",
     phonePlaceholder: "9XX XXX XXXX",
     submitting: "Ipinapadala…",
-    reassurance:
-      "Makikipag-ugnayan sa iyo ang aming specialist sa lalong madaling panahon para kumpirmahin ang iyong order.",
+    reassurance: "Mabilis ka naming tatawagan para kumpirmahin ang iyong order.",
+    privacy: "Gagamitin lang ang iyong detalye para makontak ka tungkol sa order na ito.",
     failure: "May problemang naganap. Pakisuri ang iyong detalye at subukan ulit.",
     successTitle: "Salamat!",
     successBody: "Natanggap na ang iyong request.",
