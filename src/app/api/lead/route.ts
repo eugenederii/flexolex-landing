@@ -4,7 +4,9 @@ import { normalisePhone } from "@/lib/leadForm";
 import { checkIpBurstLimit, checkPhoneDuplicate } from "@/lib/rateLimit";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 import { sendEzaffLead } from "@/lib/ezaff";
+import { sendMetaCapiLead } from "@/lib/metaCapi";
 import { createPendingLead, hashPhone, markLeadAccepted, markLeadSubmissionFailed } from "@/lib/leadStore";
+import { pricing } from "@/data/site";
 import { TRACKED_PARAM_KEYS, type LeadApiRequestBody, type LeadApiResponseBody, type TrackedParams } from "@/types";
 
 /* ==========================================================================
@@ -232,6 +234,24 @@ export async function POST(request: NextRequest): Promise<NextResponse<LeadApiRe
   // business outcome; a failure here is logged and self-heals from the
   // postback's ezaff_order_id backfill (see leadStore.applyEzaffPostback).
   await markLeadAccepted(publisherOrderId, result.orderId);
+
+  // Server-side counterpart of the browser's trackLead() (see lib/tracking.ts
+  // THE LEAD RULE) — fired only now that EZAFF has confirmed the lead, with
+  // the exact same metaLeadEventId, so Meta deduplicates the browser Pixel
+  // event and this Conversions API event into one conversion. Never throws,
+  // never changes this response — see lib/metaCapi.ts.
+  await sendMetaCapiLead({
+    eventId: metaLeadEventId,
+    eventSourceUrl,
+    clientIp,
+    userAgent,
+    fbp,
+    fbc,
+    phoneDigits: digits,
+    fullName,
+    value: pricing.current,
+    currency: "PHP",
+  });
 
   return NextResponse.json({ success: true, orderId: result.orderId, publisherOrderId, metaLeadEventId });
 }
