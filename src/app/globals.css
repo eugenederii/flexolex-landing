@@ -245,6 +245,23 @@
   animation: fade-in 0.3s var(--ease-out-soft) both;
 }
 
+/* Very subtle "listening" ring behind the order-success active step icon */
+@keyframes pulse-ring {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.32;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.1;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2.2s var(--ease-out-soft) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -262,6 +279,166 @@
     opacity: 1;
     transform: none;
   }
+}
+
+/* ==========================================================================
+   ORDER SUCCESS — "Lavender Pearl / Soft Aurora"
+   --------------------------------------------------------------------------
+   A one-off palette + surfaces for the post-submit success moment only (see
+   components/sections/OrderSection.tsx). Deliberately NOT part of the
+   @theme block above — this is a single "new chapter" beat right after
+   checkout, not a site-wide re-theme. Every color here was checked against
+   its actual background for WCAG contrast before use.
+   ========================================================================== */
+
+.success-aurora {
+  --sa-plum: #2f2542; /* headline */
+  --sa-plum-soft: #352a4a; /* card/section titles */
+  --sa-text-soft: #675f78; /* supporting text — 5.8:1 on the pearl card */
+  --sa-text-muted: #6e6580; /* muted supporting text — 5.3:1 on the pearl card */
+  --sa-eyebrow: #7466c5; /* small uppercase kickers — 4.5:1 on the pearl card */
+  --sa-active-text: #5b4fd1; /* "Confirm" label text — 5.8:1 on the pearl card */
+  --sa-active: #7467e8; /* active node glow/gradient stop */
+  --sa-active-deep: #6f8ff0; /* active node gradient stop */
+  --sa-active-light: #8a79f2; /* active node gradient stop */
+  --sa-aqua: #79cfc6; /* completed node */
+  --sa-aqua-light: #bdeee7; /* completed node gradient stop */
+  --sa-aqua-icon: #1f4a43; /* completed node checkmark — 5.4:1+ on aqua */
+  --sa-champagne: #f3ddc6; /* upcoming node */
+  --sa-champagne-light: #f7ebd9; /* upcoming node gradient stop */
+  --sa-champagne-icon: #7d6a52; /* upcoming node package icon — 3.9:1 on champagne */
+  --sa-checkmark: #463765; /* medallion checkmark */
+}
+
+/* Soft layered light field — lavender upper-left, powder-blue upper-right,
+   a breath of blush at the lower edge, pearl-white base underneath. Every
+   stop is intentionally translucent with no hard edges. */
+.success-aurora-bg {
+  background-color: #fcfaff;
+  background-image:
+    /* Softens the seam against the Offer section's plain cream padding
+       above — without it, the aurora field starts as a hard color wall
+       right where that section's own spacing ends. Fixed pixel stops, not
+       percentages: this section's height varies with content, and a
+       percentage-based fade could stretch far enough to wash out over the
+       medallion/headline. 40px keeps it safely inside the smallest
+       (mobile, pt-12 = 48px) top padding at every breakpoint. Eased across
+       several stops rather than one linear ramp — a plain 2-stop fade
+       looks like it has a visible edge (Mach-band effect) even though
+       it's mathematically linear. */
+    linear-gradient(
+      to bottom,
+      #f8f6f1 0,
+      rgba(248, 246, 241, 0.85) 10px,
+      rgba(248, 246, 241, 0.5) 21px,
+      rgba(248, 246, 241, 0.18) 31px,
+      rgba(248, 246, 241, 0) 40px
+    ),
+    radial-gradient(60% 50% at 14% 10%, rgba(216, 196, 255, 0.55), transparent 70%),
+    radial-gradient(55% 45% at 86% 16%, rgba(186, 212, 255, 0.5), transparent 70%),
+    radial-gradient(48% 38% at 50% 108%, rgba(255, 214, 233, 0.32), transparent 70%);
+}
+
+/* Frosted crystal, not a colored outline: the border gradient reads as
+   light catching the edge of frosted glass — icy lavender where it lands
+   upper-left, fading through near-transparent pearl white, then a cool
+   periwinkle-blue catch on the right edge (the classic two-layer
+   background trick: one gradient clipped to the padding box for the fill,
+   one clipped to the border box for the ring — this is what lets the
+   border curve cleanly with the card's own radius, unlike `border-image`).
+   The outer shadow is a cool violet-blue "floating" shadow rather than an
+   ambient glow, and the inset highlights trace the top AND side edges like
+   a glass surface catching ambient light. Readable on its own even where
+   backdrop-filter isn't supported. This is the confirmed base direction —
+   see .success-card-pearl-quiet below for the elevated secondary surface. */
+.success-card-pearl {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.76)),
+    linear-gradient(
+      115deg,
+      rgba(178, 161, 240, 0.62) 0%,
+      rgba(205, 195, 248, 0.34) 30%,
+      rgba(220, 225, 250, 0.26) 55%,
+      rgba(195, 210, 250, 0.34) 78%,
+      rgba(160, 185, 240, 0.48) 100%
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.92),
+    inset 1px 0 0 rgba(255, 255, 255, 0.4),
+    inset -1px 0 0 rgba(197, 214, 245, 0.24),
+    0 0 46px rgba(180, 190, 240, 0.2),
+    0 22px 46px -22px rgba(130, 140, 220, 0.3),
+    0 8px 20px -10px rgba(70, 55, 101, 0.12);
+  /* No @supports gate needed — unsupported browsers just ignore this
+     declaration and keep the (already fully readable) gradient above. */
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+}
+
+/* NEXT STEP — a premium secondary module, not just an inner tinted block.
+   Same frosted-crystal grammar as .success-card-pearl (fill clipped to
+   padding-box, gradient ring clipped to border-box) but pushed further:
+   a richer lavender-periwinkle ring, a stronger frosted blur/saturation so
+   the surface itself reads as glass rather than a flat tint, and a taller
+   drop shadow that visually separates it from the main card's interior
+   instead of sitting flush against it. */
+.success-card-pearl-quiet {
+  border: 1.5px solid transparent;
+  background-image:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.82), rgba(247, 242, 253, 0.74) 55%, rgba(240, 244, 255, 0.74)),
+    linear-gradient(
+      305deg,
+      rgba(220, 212, 250, 0.4) 0%,
+      rgba(255, 255, 255, 0.24) 45%,
+      rgba(205, 220, 248, 0.36) 100%
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.88),
+    inset 1px 0 0 rgba(255, 255, 255, 0.38),
+    0 3px 10px -6px rgba(70, 55, 101, 0.1),
+    0 12px 22px -18px rgba(116, 103, 232, 0.2);
+  /* A shallower blur than .success-card-pearl on purpose — nesting two
+     strong backdrop-filter blurs (this card sits inside the main card's
+     own blurred surface) produced a visible flat-colored band along the
+     bottom edge where the two blur regions overlapped. */
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(120%);
+}
+
+@keyframes success-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-success-card-in {
+  animation: success-card-in 0.5s var(--ease-out-soft) both;
+}
+
+@keyframes medallion-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-medallion-in {
+  animation: medallion-in 0.45s var(--ease-out-soft) both;
+  animation-delay: 120ms;
 }
 
 /* Hide scrollbars on the touch carousels without losing scrollability */

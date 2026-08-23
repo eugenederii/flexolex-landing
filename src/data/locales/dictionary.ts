@@ -107,9 +107,27 @@ export interface Dictionary {
     /** Smaller, subtler trust line below the reassurance line, with a shield-check icon. */
     privacy: string;
     failure: string;
+    /** Success state — compact label next to the checkmark icon. */
     successTitle: string;
+    /** Success state — small supporting line under successTitle. */
     successBody: string;
+    /** Success state — small uppercase kicker above successHeadline. */
+    successEyebrow: string;
+    /** Success state — the main "one step left" message. */
+    successHeadline: string;
+    /** Success state — 3-step progress bar label, step 1 (completed). */
+    successStepRequest: string;
+    /** Success state — 3-step progress bar label, step 2 (active). */
+    successStepConfirm: string;
+    /** Success state — 3-step progress bar label, step 3 (pending). */
+    successStepDelivery: string;
+    /** Success state — small uppercase kicker inside the "next step" card. */
+    successCardEyebrow: string;
+    /** Success state — bold headline inside the "next step" card. */
+    successCardHeadline: string;
+    /** Success state — body line inside the "next step" card. */
     successNote: string;
+    /** Success state — smallest, subtlest line inside the "next step" card. */
     successFooter: string;
     errorNameRequired: string;
     errorPhoneRequired: string;

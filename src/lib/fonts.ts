@@ -1,4 +1,4 @@
-import { Unbounded, Manrope } from "next/font/google";
+import { Unbounded, Manrope, Sora } from "next/font/google";
 // import localFont from "next/font/local";
 
 /**
@@ -35,6 +35,22 @@ export const bodyFont = Manrope({
   variable: "--font-body",
   display: "swap",
   preload: true,
+});
+
+/**
+ * SUCCESS-STATE HEADLINE ONLY — Sora.
+ * Not applied globally (never added to <html> in app/layout.tsx). Used only
+ * by the post-submit success headline in OrderSection.tsx, for a slightly
+ * more editorial typographic mood at that one moment. `preload: false`
+ * because that component may never render on a given page load (only after
+ * a successful form submit) — no reason to block on it upfront.
+ */
+export const successDisplayFont = Sora({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-sora",
+  display: "swap",
+  preload: false,
 });
 
 // export const bodyFont = localFont({
