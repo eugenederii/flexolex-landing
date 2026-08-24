@@ -1,10 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowRight, Leaf, PhoneCall } from "lucide-react";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
 import { useLanguage } from "@/components/LanguageProvider";
 import { Button } from "@/components/ui/Button";
-import { HeroVideo } from "@/components/ui/HeroVideo";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { ProductPlaceholder } from "@/components/ui/ProductPlaceholder";
 import { Reveal } from "@/components/ui/Reveal";
@@ -73,23 +73,15 @@ export function HeroSection() {
             className="order-2 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"
           >
             <div className="relative mx-auto max-w-md lg:max-w-none">
-              <HeroVideo
-                src="/assets/video/premium-wellness-hero.mp4"
-                className="h-[66svh] w-full rounded-[2rem] shadow-lift sm:h-auto sm:aspect-[4/5]"
+              <Image
+                src="/assets/video/premium-wellness-hero.png"
+                alt=""
+                width={1122}
+                height={1402}
+                priority
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 40vw"
+                className="h-[66svh] w-full rounded-[2rem] object-cover shadow-lift sm:h-auto sm:aspect-[4/5]"
               />
-
-              {/* Product pack overlapping the frame — from sm upward only.
-                  On mobile the product moves below the photo instead (see
-                  the price/CTA block), so nothing sits on top of the image. */}
-              <div className="absolute -bottom-8 -left-8 hidden w-44 sm:block lg:w-48">
-                <ProductPlaceholder
-                  id="hero-desktop"
-                  float
-                  priority
-                  sizes="200px"
-                  className="w-full drop-shadow-[0_24px_32px_rgba(11,46,99,0.35)]"
-                />
-              </div>
             </div>
           </Reveal>
 
