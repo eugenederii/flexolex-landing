@@ -50,6 +50,8 @@ export interface CreatePendingLeadInput {
   fbc?: string;
   /** fbclid/campaign_id/adset_id/ad_id ride along here (see types TRACKED_PARAM_KEYS). */
   params: TrackedParams;
+  /** Already strictly validated (`=== true`) server-side — see app/api/lead/route.ts. */
+  callConsent: boolean;
 }
 
 export type CreatePendingLeadResult = { ok: true } | { ok: false; reason: string };
@@ -74,7 +76,8 @@ export async function createPendingLead(input: CreatePendingLeadInput): Promise<
          fbclid, fbp, fbc, campaign_id, adset_id, ad_id,
          ref_url, event_source_url, client_ip, user_agent,
          phone_hash, phone_last4,
-         meta_lead_event_id
+         meta_lead_event_id,
+         call_consent
        ) VALUES (
          $1, $2, 'pending',
          $3, $4, $5, $6, $7,
@@ -82,7 +85,8 @@ export async function createPendingLead(input: CreatePendingLeadInput): Promise<
          $14, $15, $16, $17, $18, $19,
          $20, $21, $22, $23,
          $24, $25,
-         $26
+         $26,
+         $27
        )`,
       [
         input.publisherOrderId,
@@ -111,6 +115,7 @@ export async function createPendingLead(input: CreatePendingLeadInput): Promise<
         digits ? hashPhone(digits) : null,
         phoneLast4,
         input.metaLeadEventId,
+        input.callConsent,
       ],
     );
 

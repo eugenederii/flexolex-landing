@@ -101,6 +101,10 @@ export interface Dictionary {
     namePlaceholder: string;
     phoneLabel: string;
     phonePlaceholder: string;
+    /** Label text next to the required "agree to be called" checkbox. */
+    callConsentLabel: string;
+    /** Shown under the checkbox only after a failed submit attempt with it unchecked. */
+    errorCallConsentRequired: string;
     submitting: string;
     /** Centered reassurance line directly below the phone number field. */
     reassurance: string;

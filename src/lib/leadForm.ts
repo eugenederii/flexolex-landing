@@ -67,6 +67,10 @@ export function validateLeadForm(values: LeadFormValues): LeadFormErrorCodes {
     errors.phone = "invalid";
   }
 
+  if (!values.callConsent) {
+    errors.callConsent = "required";
+  }
+
   return errors;
 }
 
@@ -100,6 +104,7 @@ export async function submitLead(
   const payload: LeadApiRequestBody = {
     fullName: values.fullName.trim(),
     phone: normalisePhone(values.phone),
+    callConsent: values.callConsent === true,
     params,
     fbp: fbp ?? undefined,
     fbc: fbc ?? undefined,

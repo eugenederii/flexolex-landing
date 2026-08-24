@@ -118,6 +118,8 @@ export const fil: Dictionary = {
     namePlaceholder: "Juan Dela Cruz",
     phoneLabel: "Numero ng telepono",
     phonePlaceholder: "9XX XXX XXXX",
+    callConsentLabel: "Sang-ayon akong tawagan ako para ma-confirm ang order ko.",
+    errorCallConsentRequired: "Kailangan mo munang i-check ito.",
     submitting: "Ipinapadala…",
     reassurance: "Mabilis ka naming tatawagan para kumpirmahin ang iyong order.",
     privacy: "Gagamitin lang ang iyong detalye para makontak ka tungkol sa order na ito.",

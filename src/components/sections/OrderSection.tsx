@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState, type FormEvent } from "react";
-import { Check, Phone, ShieldCheck, Truck, User } from "lucide-react";
+import { AlertCircle, Check, Phone, ShieldCheck, Truck, User } from "lucide-react";
 import { pricing } from "@/data/site";
 import { successDisplayFont } from "@/lib/fonts";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
@@ -22,7 +22,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ProductPlaceholder } from "@/components/ui/ProductPlaceholder";
 import { TurnstileWidget, isTurnstileConfiguredClient } from "@/components/TurnstileWidget";
 
-const emptyValues: LeadFormValues = { fullName: "", phone: "" };
+const emptyValues: LeadFormValues = { fullName: "", phone: "", callConsent: false };
 
 /** Maps locale-agnostic validation codes to the active dictionary's strings. */
 function toDisplayErrors(codes: LeadFormErrorCodes, order: Dictionary["order"]): LeadFormErrors {
@@ -30,6 +30,7 @@ function toDisplayErrors(codes: LeadFormErrorCodes, order: Dictionary["order"]):
   if (codes.fullName) errors.fullName = order.errorNameRequired;
   if (codes.phone === "required") errors.phone = order.errorPhoneRequired;
   if (codes.phone === "invalid") errors.phone = order.errorPhoneInvalid;
+  if (codes.callConsent) errors.callConsent = order.errorCallConsentRequired;
   return errors;
 }
 
@@ -45,7 +46,7 @@ export function OrderSection() {
   const successRef = useRef<HTMLParagraphElement>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
 
-  const setField = (field: keyof LeadFormValues) => (raw: string) => {
+  const setField = (field: "fullName" | "phone") => (raw: string) => {
     const value = field === "phone" ? formatPhoneInput(raw) : raw;
     setValues((current) => ({ ...current, [field]: value }));
 
@@ -54,6 +55,20 @@ export function OrderSection() {
     if (submitted) {
       setErrors(toDisplayErrors(validateLeadForm({ ...values, [field]: value }), copy));
     }
+
+    // A stale "something went wrong" banner from a previous failed attempt
+    // must not linger once the visitor is actively correcting the form.
+    if (status === "error") setStatus("idle");
+  };
+
+  const setCallConsent = (checked: boolean) => {
+    setValues((current) => ({ ...current, callConsent: checked }));
+
+    if (submitted) {
+      setErrors(toDisplayErrors(validateLeadForm({ ...values, callConsent: checked }), copy));
+    }
+
+    if (status === "error") setStatus("idle");
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -301,6 +316,41 @@ export function OrderSection() {
                     prefix="+63"
                     required
                   />
+
+                  <div>
+                    <label
+                      htmlFor={`${formId}-callConsent`}
+                      className="flex cursor-pointer items-start gap-3"
+                    >
+                      <input
+                        id={`${formId}-callConsent`}
+                        name="callConsent"
+                        type="checkbox"
+                        checked={values.callConsent}
+                        onChange={(event) => setCallConsent(event.target.checked)}
+                        required
+                        aria-invalid={errors.callConsent ? true : undefined}
+                        aria-describedby={errors.callConsent ? `${formId}-callConsent-error` : undefined}
+                        className={cn(
+                          "mt-0.5 size-5 shrink-0 rounded-md border-2 bg-surface text-navy",
+                          "transition-colors duration-200 outline-none",
+                          "focus-visible:ring-4 focus-visible:ring-navy/12",
+                          errors.callConsent ? "border-danger" : "border-line-strong",
+                        )}
+                      />
+                      <span className="text-sm text-ink-soft">{copy.callConsentLabel}</span>
+                    </label>
+
+                    {errors.callConsent && (
+                      <p
+                        id={`${formId}-callConsent-error`}
+                        className="mt-2 flex items-start gap-1.5 text-sm font-semibold text-danger"
+                      >
+                        <AlertCircle aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+                        {errors.callConsent}
+                      </p>
+                    )}
+                  </div>
 
                   {/* Honeypot — hidden from people and from assistive tech */}
                   <input

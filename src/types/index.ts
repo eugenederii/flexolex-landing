@@ -27,6 +27,8 @@ export interface Review {
 export interface LeadFormValues {
   fullName: string;
   phone: string;
+  /** Required consent to be called for order confirmation — never pre-checked. */
+  callConsent: boolean;
 }
 
 /** Displayable, already-localized validation messages — keyed by field. */
@@ -86,6 +88,8 @@ export interface TrackingEventPayload {
 export interface LeadApiRequestBody {
   fullName: string;
   phone: string;
+  /** Required consent to be called for order confirmation — never pre-checked. */
+  callConsent: boolean;
   /** Attribution parameters captured from the URL/session — see lib/urlParams.ts. */
   params: TrackedParams;
   /** Meta `_fbp`/`_fbc` cookies, read fresh immediately before submission — see lib/leadForm.ts. */

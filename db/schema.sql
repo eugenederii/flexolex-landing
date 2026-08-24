@@ -165,3 +165,13 @@ CREATE TABLE IF NOT EXISTS lead_submission_attempts (
 
 CREATE INDEX IF NOT EXISTS lead_submission_attempts_ip_hash_created_at_idx
   ON lead_submission_attempts (ip_hash, created_at);
+
+-- --------------------------------------------------------------------------
+-- Additive migration — required "agree to be called" consent checkbox (see
+-- src/app/api/lead/route.ts, which re-validates this server-side and never
+-- trusts the client). DEFAULT false exists only to satisfy NOT NULL for the
+-- backfill of pre-existing rows created before this column existed — it is
+-- never an implicit "yes" for a NEW submission, which is rejected with 400
+-- before a row is ever inserted unless the visitor actually checked the box.
+-- --------------------------------------------------------------------------
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS call_consent BOOLEAN NOT NULL DEFAULT false;

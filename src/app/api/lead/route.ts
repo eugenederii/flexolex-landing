@@ -124,8 +124,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<LeadApiRe
   // ("0" + the 10-digit PH subscriber number) — see lib/leadForm.ts.
   const phone = normalisePhone(typeof body.phone === "string" ? body.phone : "");
   const digits = phone.replace(/\D/g, "");
+  // Strict `=== true`, never Boolean(x)/truthy — the client is untrusted,
+  // and a truthy check would accept any non-empty string/object sent by a
+  // direct API call that skipped the actual checkbox.
+  const callConsent = body.callConsent === true;
 
-  if (fullName.length < 2 || fullName.length > MAX_NAME_LENGTH || digits.length !== 11) {
+  if (fullName.length < 2 || fullName.length > MAX_NAME_LENGTH || digits.length !== 11 || !callConsent) {
     return NextResponse.json({ success: false, message: GENERIC_FAILURE_MESSAGE }, { status: 400 });
   }
 
@@ -197,6 +201,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<LeadApiRe
     fbp,
     fbc,
     params,
+    callConsent,
   });
 
   if (!pending.ok) {

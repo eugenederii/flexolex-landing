@@ -112,6 +112,8 @@ export const en: Dictionary = {
     namePlaceholder: "Juan Dela Cruz",
     phoneLabel: "Phone number",
     phonePlaceholder: "9XX XXX XXXX",
+    callConsentLabel: "I agree to receive a phone call to confirm my order.",
+    errorCallConsentRequired: "Please confirm you agree to receive a call.",
     submitting: "Sending…",
     reassurance: "We'll call you quickly to confirm your order.",
     privacy: "Your details are used only to contact you about this order.",
