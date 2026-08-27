@@ -1,6 +1,6 @@
 "use client";
 
-import { priceText, pricing } from "@/data/site";
+import { priceText } from "@/data/site";
 import { useLanguage } from "@/components/LanguageProvider";
 import { cn } from "@/lib/cn";
 
@@ -9,7 +9,6 @@ interface PriceDisplayProps {
   tone?: "light-bg" | "dark-bg";
   /** Stack the old price above the new one instead of inline. */
   layout?: "inline" | "stacked";
-  showBadge?: boolean;
   className?: string;
 }
 
@@ -29,7 +28,6 @@ export function PriceDisplay({
   size = "md",
   tone = "light-bg",
   layout = "inline",
-  showBadge = true,
   className,
 }: PriceDisplayProps) {
   const dark = tone === "dark-bg";
@@ -54,29 +52,16 @@ export function PriceDisplay({
         {priceText.current}
       </p>
 
-      <div className="flex items-center gap-2.5">
-        <s
-          className={cn(
-            "font-display font-medium tracking-[-0.02em] decoration-2",
-            oldSizes[size],
-            dark ? "text-sky/70 decoration-sky/70" : "text-ink-muted decoration-ink-muted/70",
-          )}
-        >
-          <span className="sr-only">{t.priceDisplay.originalSr} </span>
-          {priceText.original}
-        </s>
-
-        {showBadge && (
-          <span
-            className={cn(
-              "rounded-full px-2.5 py-1 text-xs font-bold tracking-[0.06em] uppercase",
-              dark ? "bg-gold-soft text-navy-deep" : "bg-gold/15 text-gold",
-            )}
-          >
-            {pricing.discountLabel}
-          </span>
+      <s
+        className={cn(
+          "font-display font-medium tracking-[-0.02em] decoration-2",
+          oldSizes[size],
+          dark ? "text-sky/70 decoration-sky/70" : "text-ink-muted decoration-ink-muted/70",
         )}
-      </div>
+      >
+        <span className="sr-only">{t.priceDisplay.originalSr} </span>
+        {priceText.original}
+      </s>
     </div>
   );
 }

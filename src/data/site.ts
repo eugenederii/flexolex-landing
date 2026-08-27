@@ -11,9 +11,8 @@ export const brand = {
 
 export const pricing = {
   currency: "₱",
-  original: 3940,
+  original: 3200,
   current: 1970,
-  discountLabel: "50% OFF",
 } as const;
 
 export const formatPeso = (amount: number): string =>

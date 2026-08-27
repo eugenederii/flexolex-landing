@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { priceText, pricing } from "@/data/site";
+import { priceText } from "@/data/site";
 import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
 import { useLanguage } from "@/components/LanguageProvider";
 import { cn } from "@/lib/cn";
@@ -79,9 +79,8 @@ export function StickyMobileCTA() {
           <p className="font-display text-lg leading-none font-bold tracking-[-0.02em] text-navy-deep">
             {priceText.current}
           </p>
-          <p className="mt-0.5 flex items-center gap-1.5 text-[0.6875rem] text-ink-muted">
+          <p className="mt-0.5 text-[0.6875rem] text-ink-muted">
             <s>{priceText.original}</s>
-            <span className="font-bold text-gold">{pricing.discountLabel}</span>
           </p>
         </div>
 
