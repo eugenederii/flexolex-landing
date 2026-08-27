@@ -10,6 +10,15 @@
    src/components/LanguageProvider.tsx for the runtime switch. */
 export type Locale = "en" | "fil";
 
+export interface Ingredient {
+  id: string;
+  /** Scientific/product name — not translated, same in every locale. */
+  name: string;
+  /** Path under /public/assets/ingredients. */
+  image: string;
+  description: Record<Locale, string>;
+}
+
 export interface Review {
   id: string;
   name: string;

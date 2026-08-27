@@ -6,6 +6,7 @@ export const en: Dictionary = {
     getFlexolex: "GET FLEXOLEX",
     claimOff: "CLAIM 50% OFF",
     categoryLabel: "Daily Joint Support",
+    originalProductBadge: "Original FLEXOLEX",
   },
 
   header: {
@@ -24,6 +25,7 @@ export const en: Dictionary = {
     headlineLead: "Daily support for",
     headlineAccent: "comfortable movement",
     trust: "Fill in the form below and we'll call to confirm your order.",
+    jointPainBenefit: "Capsules for joint pain",
     playAriaLabel: "Play video",
     replayAriaLabel: "Replay video",
   },
@@ -66,6 +68,12 @@ export const en: Dictionary = {
         description: "One price, one short form, one confirmation call. No hidden steps.",
       },
     ],
+  },
+
+  ingredients: {
+    eyebrow: "What's inside",
+    title: "Flexolex's key ingredients",
+    lead: "Combined ingredients for everyday joint support.",
   },
 
   lifestyle: {

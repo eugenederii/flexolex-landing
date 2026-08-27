@@ -12,6 +12,7 @@ export const fil: Dictionary = {
     getFlexolex: "KUNIN ANG FLEXOLEX",
     claimOff: "KUNIN ANG 50% OFF",
     categoryLabel: "Pang-araw-araw na Suporta sa Kasu-kasuan",
+    originalProductBadge: "Orihinal na FLEXOLEX",
   },
 
   header: {
@@ -30,6 +31,7 @@ export const fil: Dictionary = {
     headlineLead: "Araw-araw na suporta para sa",
     headlineAccent: "komportableng galaw",
     trust: "Punan ang form sa ibaba at tatawagan ka namin para kumpirmahin ang iyong order.",
+    jointPainBenefit: "Mga capsule para sa pananakit ng kasu-kasuan",
     playAriaLabel: "I-play ang video",
     replayAriaLabel: "Ulitin ang video",
   },
@@ -72,6 +74,12 @@ export const fil: Dictionary = {
         description: "Isang presyo, isang maikling form, isang tawag para kumpirmahin. Walang tagong hakbang.",
       },
     ],
+  },
+
+  ingredients: {
+    eyebrow: "Ano ang nasa loob",
+    title: "Mga pangunahing sangkap ng FLEXOLEX",
+    lead: "Pinagsamang mga sangkap para sa pang-araw-araw na suporta sa kasu-kasuan.",
   },
 
   lifestyle: {

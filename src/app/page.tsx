@@ -6,6 +6,7 @@ import { StickyMobileCTA } from "@/components/ui/StickyMobileCTA";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { ProductSection } from "@/components/sections/ProductSection";
+import { IngredientsSection } from "@/components/sections/IngredientsSection";
 import { LifestyleSection } from "@/components/sections/LifestyleSection";
 import { ReviewsSection } from "@/components/sections/ReviewsSection";
 import { OfferSection } from "@/components/sections/OfferSection";
@@ -28,6 +29,7 @@ export default function Home() {
         <HeroSection />
         <TrustStrip />
         <ProductSection />
+        <IngredientsSection />
         <LifestyleSection />
         <ReviewsSection />
         <OfferSection />

@@ -64,6 +64,14 @@ const nextConfig: NextConfig = {
     if (process.env.NODE_ENV !== "production") return [];
     return [{ source: "/(.*)", headers: SECURITY_HEADERS }];
   },
+  images: {
+    // Next.js 16 only serves quality values explicitly allowlisted here —
+    // 75 is the framework default (used everywhere else via next/image's
+    // own default), 90 is used only by the hero doctor photo
+    // (components/sections/HeroSection.tsx), where it's cropped fairly
+    // tightly on desktop and benefits from less compression softening.
+    qualities: [75, 90],
+  },
 };
 
 export default nextConfig;

@@ -16,6 +16,8 @@ export interface Dictionary {
     /** "Daily Joint Support" — the brand's category line, reused in the
      *  footer wordmark and the product section tagline. */
     categoryLabel: string;
+    /** Quiet trust badge near the product image — hero + "Meet Flexolex" section only. */
+    originalProductBadge: string;
   };
 
   header: {
@@ -38,6 +40,8 @@ export interface Dictionary {
     headlineLead: string;
     headlineAccent: string;
     trust: string;
+    /** Third check-marked benefit bullet, from the affiliate offer's own product description. */
+    jointPainBenefit: string;
     playAriaLabel: string;
     replayAriaLabel: string;
   };
@@ -59,6 +63,12 @@ export interface Dictionary {
     titleLead: string;
     lead: string;
     points: { title: string; description: string }[];
+  };
+
+  ingredients: {
+    eyebrow: string;
+    title: string;
+    lead: string;
   };
 
   lifestyle: {

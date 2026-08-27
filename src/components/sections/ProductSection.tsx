@@ -1,12 +1,15 @@
 "use client";
 
-import { Handshake, Leaf, type LucideIcon } from "lucide-react";
+import { ArrowRight, Handshake, Leaf, type LucideIcon } from "lucide-react";
 import { brand } from "@/data/site";
+import { ORDER_SECTION_ID } from "@/lib/scrollToOrder";
 import { useLanguage } from "@/components/LanguageProvider";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProductPlaceholder } from "@/components/ui/ProductPlaceholder";
 import { Reveal } from "@/components/ui/Reveal";
+import { TrustBadge } from "@/components/ui/TrustBadge";
+import { Button } from "@/components/ui/Button";
 
 interface Point {
   icon: LucideIcon;
@@ -25,7 +28,7 @@ function PointBlock({ point, align }: { point: Point; align: "left" | "right" })
   const Icon = point.icon;
 
   return (
-    <div className={align === "right" ? "lg:text-right" : undefined}>
+    <div className={`text-center ${align === "right" ? "lg:text-right" : "lg:text-left"}`}>
       <span
         aria-hidden="true"
         className={`inline-grid size-11 place-items-center rounded-xl bg-sky-mist text-navy ring-1 ring-navy/8 ${
@@ -72,8 +75,11 @@ export function ProductSection() {
           </div>
 
           {/* Product */}
-          <Reveal className="order-1 lg:order-2">
-            <div className="relative mx-auto w-full max-w-[19rem]">
+          <Reveal className="order-1 mx-auto w-full max-w-[19rem] lg:order-2">
+            {/* Glow sized to just the product image — kept in its own
+                wrapper so it never stretches to cover the caption/badge/
+                button added below it. */}
+            <div className="relative">
               <div
                 aria-hidden="true"
                 className="absolute inset-x-0 top-8 bottom-10 rounded-full bg-[radial-gradient(circle_at_50%_45%,#dfe9f5_0%,#f1ede4_55%,transparent_72%)]"
@@ -83,9 +89,24 @@ export function ProductSection() {
                 sizes="(max-width: 1024px) 60vw, 300px"
                 className="relative w-full drop-shadow-[0_30px_40px_rgba(11,46,99,0.22)]"
               />
-              <p className="mt-2 text-center font-sans text-xs font-bold tracking-[0.2em] text-ink-muted uppercase">
-                {brand.name} · {t.common.categoryLabel}
-              </p>
+            </div>
+
+            <p className="mt-2 text-center font-sans text-xs font-bold tracking-[0.2em] text-ink-muted uppercase">
+              {brand.name} · {t.common.categoryLabel}
+            </p>
+            <div className="mt-3 flex justify-center">
+              <TrustBadge />
+            </div>
+            <div className="mt-6 flex justify-center">
+              <Button
+                scrollTo={ORDER_SECTION_ID}
+                trackingSource="Product section"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                {t.common.orderNow}
+                <ArrowRight aria-hidden="true" className="size-5" strokeWidth={2.4} />
+              </Button>
             </div>
           </Reveal>
 
