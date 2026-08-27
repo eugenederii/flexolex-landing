@@ -15,6 +15,7 @@ export const ingredients: Ingredient[] = [
     description: {
       en: "A type of collagen associated with cartilage.",
       fil: "Isang uri ng collagen na nauugnay sa cartilage.",
+      ceb: "Usa ka matang sa collagen nga may kalabotan sa cartilage.",
     },
   },
   {
@@ -24,6 +25,7 @@ export const ingredients: Ingredient[] = [
     description: {
       en: "Short chains of amino acids.",
       fil: "Maiikling chain ng amino acids.",
+      ceb: "Mubo nga mga chain sa amino acids.",
     },
   },
   {
@@ -33,6 +35,7 @@ export const ingredients: Ingredient[] = [
     description: {
       en: "A common ingredient in joint-support supplements.",
       fil: "Karaniwang sangkap sa joint-support supplements.",
+      ceb: "Kasagaran nga sangkap sa mga supplement para sa lutahan.",
     },
   },
   {
@@ -42,6 +45,7 @@ export const ingredients: Ingredient[] = [
     description: {
       en: "A natural component found in cartilage.",
       fil: "Isang natural na bahagi na matatagpuan sa cartilage.",
+      ceb: "Usa ka natural nga bahin nga makita sa cartilage.",
     },
   },
   {
@@ -51,6 +55,7 @@ export const ingredients: Ingredient[] = [
     description: {
       en: "A natural substance known for its ability to hold moisture.",
       fil: "Natural na substance na kilala sa kakayahang humawak ng moisture.",
+      ceb: "Natural nga substance nga inila sa katakos nga mopugong ug moisture.",
     },
   },
 ];

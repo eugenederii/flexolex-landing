@@ -6,7 +6,7 @@ import { LANGUAGE_OPTIONS } from "@/data/locales";
 import { useLanguage } from "@/components/LanguageProvider";
 import { cn } from "@/lib/cn";
 
-const CODE_LABEL: Record<string, string> = { en: "EN", fil: "FIL" };
+const CODE_LABEL: Record<string, string> = { en: "EN", fil: "FIL", ceb: "CEB" };
 
 /**
  * Compact pill in the header: flag + language code + chevron, opening a

@@ -2,10 +2,11 @@ import type { Locale } from "@/types";
 import type { Dictionary } from "./dictionary";
 import { en } from "./en";
 import { fil } from "./fil";
+import { ceb } from "./ceb";
 
 export type { Dictionary } from "./dictionary";
 
-export const dictionaries: Record<Locale, Dictionary> = { en, fil };
+export const dictionaries: Record<Locale, Dictionary> = { en, fil, ceb };
 
 /** New visitors always get Filipino — never inferred from browser/location.
  *  English is available only via an explicit manual choice in the language
@@ -20,5 +21,6 @@ export const LOCALE_STORAGE_KEY = "flexolex-language";
  *  English, PH flag for Filipino. */
 export const LANGUAGE_OPTIONS: { code: Locale; label: string; flag: string }[] = [
   { code: "fil", label: "Filipino", flag: "🇵🇭" },
+  { code: "ceb", label: "Bisaya", flag: "🇵🇭" },
   { code: "en", label: "English", flag: "🇺🇸" },
 ];

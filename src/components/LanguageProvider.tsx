@@ -21,12 +21,13 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 function isLocale(value: string | null): value is Locale {
-  return value === "en" || value === "fil";
+  return value === "en" || value === "fil" || value === "ceb";
 }
 
 /** `<html lang>` wants a real BCP-47 tag — "tl" (Tagalog) for our "fil"
- *  internal code, not the ISO-639-2-only "fil" itself. */
-const HTML_LANG: Record<Locale, string> = { en: "en", fil: "tl" };
+ *  internal code, not the ISO-639-2-only "fil" itself. "ceb" (Cebuano) is
+ *  already a valid BCP-47 tag as-is. */
+const HTML_LANG: Record<Locale, string> = { en: "en", fil: "tl", ceb: "ceb" };
 
 /* ==========================================================================
    Tiny external store over localStorage — read via useSyncExternalStore so

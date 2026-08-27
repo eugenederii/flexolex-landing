@@ -364,8 +364,6 @@ export function OrderSection() {
                   />
                 </div>
 
-                <p className="mt-3 text-center text-sm text-ink-soft">{copy.reassurance}</p>
-
                 <TurnstileWidget onToken={setTurnstileToken} />
 
                 {status === "error" && (
@@ -377,15 +375,22 @@ export function OrderSection() {
                   </p>
                 )}
 
+                <p className="mt-4 flex items-start justify-center gap-2 text-center text-sm text-ink-soft">
+                  <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-navy" strokeWidth={2} />
+                  {copy.noPaymentNote}
+                </p>
+
                 <Button
                   type="submit"
                   size="lg"
                   fullWidth
                   disabled={status === "submitting"}
-                  className="mt-8"
+                  className="mt-4"
                 >
                   {status === "submitting" ? copy.submitting : t.common.orderNow}
                 </Button>
+
+                <p className="mt-3 text-center text-xs text-ink-muted">{copy.reserveNote}</p>
 
                 <p className="mt-6 flex items-start gap-2.5 text-sm text-ink-muted">
                   <ShieldCheck

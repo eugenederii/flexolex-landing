@@ -8,7 +8,7 @@
    is the DEFAULT for new visitors — see DEFAULT_LOCALE in src/data/locales.
    See src/data/locales for the dictionaries and
    src/components/LanguageProvider.tsx for the runtime switch. */
-export type Locale = "en" | "fil";
+export type Locale = "en" | "fil" | "ceb";
 
 export interface Ingredient {
   id: string;

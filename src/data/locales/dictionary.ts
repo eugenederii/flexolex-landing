@@ -116,8 +116,10 @@ export interface Dictionary {
     /** Shown under the checkbox only after a failed submit attempt with it unchecked. */
     errorCallConsentRequired: string;
     submitting: string;
-    /** Centered reassurance line directly below the phone number field. */
-    reassurance: string;
+    /** Small trust line directly above the submit button — no payment now, order confirmed by phone first. */
+    noPaymentNote: string;
+    /** Small, secondary microcopy directly below the submit button. Not a second CTA. */
+    reserveNote: string;
     /** Smaller, subtler trust line below the reassurance line, with a shield-check icon. */
     privacy: string;
     failure: string;
