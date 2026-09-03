@@ -10,11 +10,7 @@ import { TrustBadge } from "@/components/ui/TrustBadge";
 export function HeroSection() {
   const { t } = useLanguage();
   const copy = t.hero;
-
-  // First two reused, not invented, from the trust strip just below the
-  // hero. The third is the affiliate offer's own product description
-  // ("Капсулы от боли в суставах" in the partner network's listing).
-  const benefits = [t.trustStrip.items[0].title, t.trustStrip.items[2].title, copy.jointPainBenefit];
+  const benefits = copy.benefits;
 
   return (
     <section

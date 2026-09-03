@@ -31,7 +31,11 @@ export const fil: Dictionary = {
     headlineLead: "Araw-araw na suporta para sa",
     headlineAccent: "komportableng galaw",
     trust: "Punan ang form sa ibaba at tatawagan ka namin para kumpirmahin ang iyong order.",
-    jointPainBenefit: "Mga capsule para sa pananakit ng kasu-kasuan",
+    benefits: [
+      "Suporta sa kasu-kasuan sa araw-araw",
+      "Tulong para sa mas malayang paggalaw",
+      "Capsule para makatulong sa pananakit at paninigas ng kasu-kasuan",
+    ],
     playAriaLabel: "I-play ang video",
     replayAriaLabel: "Ulitin ang video",
   },
@@ -63,7 +67,7 @@ export const fil: Dictionary = {
   product: {
     eyebrow: "Ang produkto",
     titleLead: "Kilalanin ang",
-    lead: "Isang pang-araw-araw na produkto para sa suporta ng kasu-kasuan, gawa para madaling maisama sa iyong routine.",
+    lead: "Isang pang-araw-araw na produkto para sa suporta ng kasu-kasuan, ginawa para madaling maisama sa iyong routine.",
     points: [
       {
         title: "Isang pang-araw-araw na wellness product",

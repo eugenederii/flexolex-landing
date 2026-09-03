@@ -32,7 +32,7 @@ export const ceb: Dictionary = {
     headlineLead: "Adlaw-adlaw nga suporta para sa",
     headlineAccent: "komportable nga paglihok",
     trust: "Sulati ang porma sa ubos ug tawagan ka namo para kumpirmahon ang imong order.",
-    jointPainBenefit: "Mga capsule para sa sakit sa lutahan",
+    benefits: ["Adlaw-adlaw nga Suporta sa Lutahan", "Gihimo para sa Adlaw-adlaw nga Paglihok", "Mga capsule para sa sakit sa lutahan"],
     playAriaLabel: "I-play ang video",
     replayAriaLabel: "Balika ang video",
   },

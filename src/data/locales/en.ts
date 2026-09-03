@@ -25,7 +25,7 @@ export const en: Dictionary = {
     headlineLead: "Daily support for",
     headlineAccent: "comfortable movement",
     trust: "Fill in the form below and we'll call to confirm your order.",
-    jointPainBenefit: "Capsules for joint pain",
+    benefits: ["Daily Joint Support", "Made for Everyday Movement", "Capsules for joint pain"],
     playAriaLabel: "Play video",
     replayAriaLabel: "Replay video",
   },

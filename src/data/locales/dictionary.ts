@@ -40,8 +40,8 @@ export interface Dictionary {
     headlineLead: string;
     headlineAccent: string;
     trust: string;
-    /** Third check-marked benefit bullet, from the affiliate offer's own product description. */
-    jointPainBenefit: string;
+    /** Three check-marked benefit bullets shown over the hero photo. */
+    benefits: [string, string, string];
     playAriaLabel: string;
     replayAriaLabel: string;
   };
