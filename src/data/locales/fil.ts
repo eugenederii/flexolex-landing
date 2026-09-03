@@ -75,7 +75,7 @@ export const fil: Dictionary = {
       },
       {
         title: "Simple mula sa umpisa",
-        description: "Isang presyo, isang maikling form, isang tawag para kumpirmahin. Walang tagong hakbang.",
+        description: "Isang presyo lang, mabilis na form, at isang tawag para makumpirma ang order. Simple at walang dagdag na proseso.",
       },
     ],
   },
@@ -102,8 +102,8 @@ export const fil: Dictionary = {
 
   reviews: {
     eyebrow: "Sa kanilang mga salita",
-    title: "Ito ang itsura ng araw-araw na paggamit",
-    lead: "Maikling kwento mula sa mga taong isinama ang Flexolex sa routine na meron na sila.",
+    title: "Ganito Kasimple ang Paggamit Araw-araw",
+    lead: "Mga kuwento mula sa mga taong isinama ang Flexolex sa kanilang pang-araw-araw na routine.",
     swipeHint: "I-swipe para sa iba pa",
     prevAriaLabel: "Nakaraang mga review",
     nextAriaLabel: "Higit pang mga review",
